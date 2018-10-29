@@ -1,0 +1,9 @@
+var
+	a, av:logical;
+begin
+	if (a) av = 1;
+	else av = not 1;
+	read(asda, s);
+	write(sss);
+	a = ((1 equ 0) and (av or a)) equ 0;
+end
