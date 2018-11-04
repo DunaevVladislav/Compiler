@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <string>
 #include <cctype>
+#include <exception>
 using namespace std;
 
 /// <summary>

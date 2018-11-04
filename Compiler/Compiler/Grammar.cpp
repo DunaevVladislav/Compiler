@@ -163,9 +163,8 @@ vector<term*> split_on_terminals(vector<string> & lines) {
 			string msg = "";
 			if (res == -1) msg = "Identificator length exceeds 11 symbols: line " + to_string(i + 1) + " position " + to_string(j + 1);
 			if (res == 0) msg = "Unknown terminal: line " + to_string(i + 1) + " position " + to_string(j + 1);
-			if (msg.empty()) 
-				sterm = "ident";
-			else throw new exception(msg.c_str());
+			if (msg.empty()) sterm = "ident";
+			else throw runtime_error(msg);
 		}
 		res.push_back(new term(get_index(sterm), i, j));
 	};

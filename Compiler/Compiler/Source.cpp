@@ -22,10 +22,10 @@ int main(int argc, char* argv[]) {
 
 	char* file_name = argv[1], *source;
 	size_t source_size = read_file(file_name, source);
-	thread thread(initial);
+	thread thr(initial);
 	if (!~read_file(file_name, source)) exit_error("File not exist");
 
-	thread.join();
+	thr.join();
 	vector<string> lines = split_lines(source);
 	vector<term*> terms;
 	try {
@@ -43,6 +43,5 @@ int main(int argc, char* argv[]) {
 	printf("%s", code);
 	if (code[0] != '\0') delete[] code;
 	if (source[0] != '\0') delete[] source;*/
-	system("pause");
 	return 0;
 }
