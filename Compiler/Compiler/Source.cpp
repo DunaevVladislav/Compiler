@@ -31,17 +31,13 @@ int main(int argc, char* argv[]) {
 	try {
 		terms = split_on_terminals(lines);
 	}
-	catch (exception* e) {
-		exit_error(e->what());
+	catch (exception& e) {
+		exit_error(e.what());
 	}
 	cout << "terminals\tindex\t\tlines\t\tposition\n";
 	for (auto t : terms) {
 		cout << get_info(t) << endl;
 	}
-
-	/*char* code = parce_code(source, source_size);
-	printf("%s", code);
-	if (code[0] != '\0') delete[] code;
-	if (source[0] != '\0') delete[] source;*/
+	system("pause");
 	return 0;
 }
