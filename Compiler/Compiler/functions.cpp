@@ -7,7 +7,9 @@ using namespace std;
 /// <param name="message">Сообщение, выводимое на экран</param>
 void exit_error(const char* message) {
 	puts(message);
-	system("pause");
+#ifdef defined(WIN32)
+    system("pause");
+#endif
 	exit(0);
 }
 

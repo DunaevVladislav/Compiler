@@ -38,6 +38,6 @@ int main(int argc, char* argv[]) {
 	for (auto t : terms) {
 		cout << get_info(t) << endl;
 	}
-	system("pause");
+    exit_error("");
 	return 0;
 }
