@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "Grammar.h"
+#include "grammar.h"
 #include "functions.h"
 #include <iostream>
 #include <cstdio>
@@ -21,7 +21,6 @@ int main(int argc, char* argv[]) {
 	if (argc == 1) exit_error("Choice file");
 
 	char* file_name = argv[1], *source;
-	size_t source_size = read_file(file_name, source);
 	thread thr(initial);
 	if (!~read_file(file_name, source)) exit_error("File not exist");
 

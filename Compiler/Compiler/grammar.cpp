@@ -1,4 +1,4 @@
-#include "Grammar.h"
+#include "grammar.h"
 using namespace std;
 
 /// <summary>
@@ -186,7 +186,7 @@ vector<term*> split_on_terminals(vector<string> & lines) {
 /// <summary>
 /// Информация о терминале
 /// </summary>
-/// <param name="trm">Терминао</param>
+/// <param name="trm">Терминал</param>
 /// <returns>Строку, предоставляющую информацию о терминале </returns>
 string get_info(term* trm) {
 	return terminals[trm->val] + "\t\t" + to_string(trm->val) + "\t\t" +
