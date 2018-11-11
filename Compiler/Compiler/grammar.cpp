@@ -84,6 +84,7 @@ void initial() {
 	for (int i = 0; i < dictionary.size(); ++i) {
 		_ind_term_dictionary.insert({ dictionary[i], i });
 	}
+	initial_rules();
 }
 
 /// <summary>

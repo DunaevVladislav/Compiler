@@ -24,15 +24,21 @@
     <ClCompile Include="grammar.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="rules.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="code" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Grammar.h">
+    <ClInclude Include="functions.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="functions.h">
+    <ClInclude Include="grammar.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="rules.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

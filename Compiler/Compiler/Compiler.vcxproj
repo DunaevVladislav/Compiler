@@ -119,6 +119,7 @@
   <ItemGroup>
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="grammar.cpp" />
+    <ClCompile Include="rules.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -126,7 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="functions.h" />
-    <ClInclude Include="Grammar.h" />
+    <ClInclude Include="grammar.h" />
+    <ClInclude Include="rules.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,7 +21,14 @@ int main(int argc, char* argv[]) {
 	if (argc == 1) exit_error("Choice file");
 
 	char* file_name = argv[1], *source;
-	thread thr(initial);
+	thread thr([&]() {
+		try {
+			initial(); 
+		}
+		catch (exception& e) {
+			exit_error(e.what());
+		}
+	});
 	if (!~read_file(file_name, source)) exit_error("File not exist");
 
 	thr.join();
@@ -37,6 +44,6 @@ int main(int argc, char* argv[]) {
 	for (auto t : terms) {
 		cout << get_info(t) << endl;
 	}
-    exit_error("");
+	exit_error("");
 	return 0;
 }
