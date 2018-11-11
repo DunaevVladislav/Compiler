@@ -51,6 +51,7 @@ vector<string> determinals = {
 	"<Binary_op>",
 	"<Operand>",
 	"<Const>",
+	MAGAZINE_BOTTOM,
 };
 
 /// <summary>

@@ -9,7 +9,10 @@
 #include <exception>
 using namespace std;
 
-const string END_OF_TAPE = "▲▲▲";
+const string END_OF_TAPE = "‼‼‼";
+const string MAGAZINE_BOTTOM = "◘◘◘";
+
+const int SUCCESS = -1;
 
 /// <summary>
 /// Максимальный размер индентификатора

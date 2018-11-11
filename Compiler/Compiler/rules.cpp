@@ -5,12 +5,12 @@ using namespace std;
 template<typename... T>
 rule::rule(string left_str, const T&... rights) {
 	left = get_index(left_str);
-	if (left == -1) throw runtime_error("Dinctionary not include " + left_str);
+	if (left == -1) throw runtime_error("Dictionary not include " + left_str);
 	if (!is_determinal(left)) throw runtime_error("Left part of rules can't include terminal: " + left_str);
 	right.clear();
 	for (auto&& s : initializer_list<string>{ rights... }) {
 		right.push_back(get_index(s));
-		if (right.back() == -1) throw runtime_error("Dinctionary not include " + s);
+		if (right.back() == -1) throw runtime_error("Dictionary not include " + s);
 	}
 }
 
