@@ -11,6 +11,10 @@ add_executable(Compiler
         Compiler/code
         Compiler/functions.cpp
         Compiler/functions.h
+        Compiler/automate.cpp
+        Compiler/automate.h
+        Compiler/rules.cpp
+        Compiler/rules.h
         Compiler/grammar.cpp
         Compiler/grammar.h
         Compiler/Source.cpp)
