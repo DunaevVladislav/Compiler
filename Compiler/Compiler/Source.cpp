@@ -33,6 +33,9 @@ int main(int argc, char* argv[]) {
 
 	thr.join();
 	vector<string> lines = split_lines(source);
+
+
+	lines.push_back(END_OF_TAPE);
 	vector<term*> terms;
 	try {
 		terms = split_on_terminals(lines);

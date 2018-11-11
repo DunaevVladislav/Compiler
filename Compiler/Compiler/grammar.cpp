@@ -1,6 +1,8 @@
 #include "grammar.h"
 using namespace std;
 
+
+
 /// <summary>
 /// Терминальные символы
 /// </summary>
@@ -28,6 +30,7 @@ vector<string> terminals = {
 	"=",
 	"(",
 	")",
+	END_OF_TAPE,
 };
 
 /// <summary>
@@ -85,6 +88,7 @@ void initial() {
 		_ind_term_dictionary.insert({ dictionary[i], i });
 	}
 	initial_rules();
+	initial_automate();
 }
 
 /// <summary>
@@ -163,7 +167,8 @@ vector<term*> split_on_terminals(vector<string> & lines) {
 			int res = is_ident(sterm);
 			string msg = "";
 			if (res == -1) msg = "Identificator length exceeds 11 symbols: line " + to_string(i + 1) + " position " + to_string(j + 1);
-			if (res == 0) msg = "Unknown terminal: line " + to_string(i + 1) + " position " + to_string(j + 1);
+			if (res == 0) 
+				msg = "Unknown terminal: line " + to_string(i + 1) + " position " + to_string(j + 1);
 			if (msg.empty()) sterm = "ident";
 			else throw runtime_error(msg);
 		}
