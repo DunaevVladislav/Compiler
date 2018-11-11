@@ -45,6 +45,8 @@ void initial_rules() {
 	rules.push_back(rule("<Function>", "read", "(", "ident", "<Var_list>", ")", ";"));
 	rules.push_back(rule("<Function>", "write", "(", "ident", "<Var_list>", ")", ";"));
 	rules.push_back(rule("<Function>", "if", "<Expression>", "then", "<Function_list>", "else", "<Function_list>","end_if", ";"));
-	rules.push_back(rule("<Function>", "read", "(", "ident", ")", ";"));
-	rules.push_back(rule("<Function>", "write", "(", "ident", ")", ";"));
+	rules.push_back(rule("<Function>", "<Prefix_io>", ")", ";"));
+	rules.push_back(rule("<Function>", "<Prefix_io>", ")", ";"));
+	rules.push_back(rule("<Prefix_io>", "write", "(", "ident"));
+	rules.push_back(rule("<Prefix_io>", "read", "(", "ident"));
 }

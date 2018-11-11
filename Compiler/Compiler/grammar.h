@@ -7,12 +7,13 @@
 #include <string>
 #include <cctype>
 #include <exception>
+#include <iostream>
 using namespace std;
 
-const string END_OF_TAPE = "‼‼‼";
-const string MAGAZINE_BOTTOM = "◘◘◘";
+const string END_OF_TAPE = "~`~`~";
+const string MAGAZINE_BOTTOM = "`~`~`";
 
-const int SUCCESS = -1;
+const int SUCCESS = -2;
 
 /// <summary>
 /// Максимальный размер индентификатора
@@ -121,3 +122,5 @@ vector<term*> split_on_terminals(vector<string> & lines);
 /// <param name="trm">Терминал</param>
 /// <returns>Строку, предоставляющую информацию о терминале </returns>
 string get_info(term* trm);
+
+bool check_grammar(vector<term*> input_line);

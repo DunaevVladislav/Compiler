@@ -35,7 +35,6 @@ int main(int argc, char* argv[]) {
 	vector<string> lines = split_lines(source);
 
 
-	lines.push_back(END_OF_TAPE);
 	vector<term*> terms;
 	try {
 		terms = split_on_terminals(lines);
@@ -43,10 +42,12 @@ int main(int argc, char* argv[]) {
 	catch (exception& e) {
 		exit_error(e.what());
 	}
+	terms.push_back(new term(get_index(END_OF_TAPE), -1, -1));
 	cout << "terminals\tindex\t\tlines\t\tposition\n";
 	for (auto t : terms) {
 		cout << get_info(t) << endl;
 	}
+	check_grammar(terms);
 	exit_error("");
 	return 0;
 }

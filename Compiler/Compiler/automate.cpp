@@ -70,17 +70,23 @@ void initial_automate() {
 	_add_in_automate("0", "or", 24);
 	_add_in_automate("0", ";", 24);
 	_add_in_automate("0", ")", 24);
+	_add_in_automate("0", "then", 24);
 	_add_in_automate("1", "and", 25);
 	_add_in_automate("1", "equ", 25);
 	_add_in_automate("1", "or", 25);
 	_add_in_automate("1", ";", 25);
 	_add_in_automate("1", ")", 25);
+	_add_in_automate("1", "then", 25);
 
 	_add_in_automate("ident", "and", 22);
 	_add_in_automate("ident", "equ", 22);
 	_add_in_automate("ident", "or", 22);
 	_add_in_automate("ident", ";", 22);
-	_add_in_automate("ident", ")", 6, 22);
+	_add_in_automate("ident", "then", 22);
+	_add_in_automate("ident", ":", 6, 0);
+	_add_in_automate("ident", ",", 0);
+	_add_in_automate("ident", "=", 0);
+	_add_in_automate("ident", ")", 6, 31,32, 22);
 
 	_add_in_automate(";", "begin", 2);
 	_add_in_automate(";", "end", 12, 26, 27, 28, 29, 30);
@@ -88,6 +94,8 @@ void initial_automate() {
 	_add_in_automate(";", "write", 12, 26, 27, 28, 29, 30);
 	_add_in_automate(";", "if", 12, 26, 27, 28, 29, 30);
 	_add_in_automate(";", "ident", 12, 26, 27, 28, 29, 30);
+	_add_in_automate(";", "else", 12, 26, 27, 28, 29, 30);
+	_add_in_automate(";", "end_if", 12, 26, 27, 28, 29, 30);
 
 	_add_in_automate(":", "logical", 3, 4);
 	_add_in_automate(",", "ident", 0);
@@ -110,36 +118,45 @@ void initial_automate() {
 	_add_in_automate(")", "or", 15);
 	_add_in_automate(")", ";", 15, 0);
 	_add_in_automate(")", ")", 15);
+	_add_in_automate(")", "then", 15);
 
-	_add_in_automate("<Program>", END_OF_TAPE, SUCCESS);
+	_add_in_automate("<Program>", END_OF_TAPE, SUCCESS + 1);
 	_add_in_automate("<Var_declare>", "begin", 0);
 	_add_in_automate("<Var_list>", ":", 5, 0);
 	_add_in_automate("<Var_list>", ")", 5, 0);
 	_add_in_automate("<Prefix_var_declare>", "logical", 0);
 	_add_in_automate("<Calculation_descr>", END_OF_TAPE, 1);
-	_add_in_automate("<Function_list>", "end", 9, 11);
+	
+	_add_in_automate("<Function_list>", "end", 9, 11, 0);
+	_add_in_automate("<Function_list>", "else", 9, 11, 0);
+	_add_in_automate("<Function_list>", "end_if", 9, 11, 0);
 
 	_add_in_automate("<Assignment>", "end", 8);
-	_add_in_automate("<Assignment>", "read", 8, 0);
-	_add_in_automate("<Assignment>", "write", 8, 0);
-	_add_in_automate("<Assignment>", "if", 8, 0);
-	_add_in_automate("<Assignment>", "ident", 8, 0);
+	_add_in_automate("<Assignment>", "read", 0);
+	_add_in_automate("<Assignment>", "write", 0);
+	_add_in_automate("<Assignment>", "if", 0);
+	_add_in_automate("<Assignment>", "ident", 0);
+	_add_in_automate("<Assignment>", "else", 8);
+	_add_in_automate("<Assignment>", "end_if", 8);
 
-	_add_in_automate("<Function>", "end", 8);
-	_add_in_automate("<Function>", "read", 8, 0);
-	_add_in_automate("<Function>", "write", 8, 0);
-	_add_in_automate("<Function>", "if", 8, 0);
-	_add_in_automate("<Function>", "ident", 8, 0);
+	_add_in_automate("<Function>", "end", 10);
+	_add_in_automate("<Function>", "read", 0);
+	_add_in_automate("<Function>", "write", 0);
+	_add_in_automate("<Function>", "if", 0);
+	_add_in_automate("<Function>", "ident", 0);
+	_add_in_automate("<Function>", "else", 10);
+	_add_in_automate("<Function>", "end_if", 10);
 
 	_add_in_automate("<Expression>", "then", 0);
 	_add_in_automate("<Expression>", ";", 0);
 	_add_in_automate("<Expression>", ")", 0);
 
-	_add_in_automate("<Sub_expression>", "and", 17, 13, 14);
-	_add_in_automate("<Sub_expression>", "equ", 17, 13, 14);
-	_add_in_automate("<Sub_expression>", "or", 17, 13, 14);
+	_add_in_automate("<Sub_expression>", "and", 17, 0);
+	_add_in_automate("<Sub_expression>", "equ", 17, 0);
+	_add_in_automate("<Sub_expression>", "or", 17, 0);
 	_add_in_automate("<Sub_expression>", ";", 17, 13, 14);
 	_add_in_automate("<Sub_expression>", ")", 17, 13, 14);
+	_add_in_automate("<Sub_expression>", "then", 17, 13, 14);
 
 	_add_in_automate("<Unary_op>", "0", 0);
 	_add_in_automate("<Unary_op>", "1", 0);
@@ -156,12 +173,16 @@ void initial_automate() {
 	_add_in_automate("<Operand>", "or", 16);
 	_add_in_automate("<Operand>", ";", 16);
 	_add_in_automate("<Operand>", ")", 16);
+	_add_in_automate("<Operand>", "then", 16);
 
 	_add_in_automate("<Const>", "and", 23);
 	_add_in_automate("<Const>", "equ", 23);
 	_add_in_automate("<Const>", "or", 23);
 	_add_in_automate("<Const>", ";", 23);
 	_add_in_automate("<Const>", ")", 23);
+	_add_in_automate("<Const>", "then", 23);
+
+	_add_in_automate("<Prefix_io>", ")", 0);
 
 	_add_in_automate(MAGAZINE_BOTTOM, "var", 0);
  }

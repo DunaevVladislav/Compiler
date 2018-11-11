@@ -1,10 +1,10 @@
-#include "grammar.h"
+п»ї#include "grammar.h"
 using namespace std;
 
 
 
 /// <summary>
-/// Терминальные символы
+/// РўРµСЂРјРёРЅР°Р»СЊРЅС‹Рµ СЃРёРјРІРѕР»С‹
 /// </summary>
 vector<string> terminals = {
 	"var",
@@ -34,7 +34,7 @@ vector<string> terminals = {
 };
 
 /// <summary>
-/// Нетерминальные символы
+/// РќРµС‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рµ СЃРёРјРІРѕР»С‹
 /// </summary>
 vector<string> determinals = {
 	"<Program>",
@@ -51,21 +51,22 @@ vector<string> determinals = {
 	"<Binary_op>",
 	"<Operand>",
 	"<Const>",
+	"<Prefix_io>",
 	MAGAZINE_BOTTOM,
 };
 
 /// <summary>
-/// Полный словарь грамматики
+/// РџРѕР»РЅС‹Р№ СЃР»РѕРІР°СЂСЊ РіСЂР°РјРјР°С‚РёРєРё
 /// </summary>
 vector<string> dictionary;
 
 /// <summary>
-/// map слово из словаря в его индекс
+/// map СЃР»РѕРІРѕ РёР· СЃР»РѕРІР°СЂСЏ РІ РµРіРѕ РёРЅРґРµРєСЃ
 /// </summary>
 unordered_map<string, int> _ind_term_dictionary;
 
 /// <summary>
-/// Символы являющиесями разделителями для данной грамматкии
+/// РЎРёРјРІРѕР»С‹ СЏРІР»СЏСЋС‰РёРµСЃСЏРјРё СЂР°Р·РґРµР»РёС‚РµР»СЏРјРё РґР»СЏ РґР°РЅРЅРѕР№ РіСЂР°РјРјР°С‚РєРёРё
 /// </summary>
 unordered_set<char> _separators = {
 	';',
@@ -80,7 +81,7 @@ unordered_set<char> _separators = {
 };
 
 /// <summary>
-/// Инициализация словарей
+/// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃР»РѕРІР°СЂРµР№
 /// </summary>
 void initial() {
 	for (string s : terminals) dictionary.emplace_back(s);
@@ -93,10 +94,10 @@ void initial() {
 }
 
 /// <summary>
-/// Является ли строка идентификатором
+/// РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃС‚СЂРѕРєР° РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРј
 /// </summary>
-/// <param name="s">Проверяемая строка</param>
-/// <returns>-1 - идентификатор, с длиной > 11; 0 - не идентификатор; 1 - идентификатор</returns>
+/// <param name="s">РџСЂРѕРІРµСЂСЏРµРјР°СЏ СЃС‚СЂРѕРєР°</param>
+/// <returns>-1 - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ, СЃ РґР»РёРЅРѕР№ > 11; 0 - РЅРµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ; 1 - РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ</returns>
 int is_ident(string s) {
 	bool ok = true;
 	for (int i = 0; ok && i < s.length(); ++i) ok = isalpha(s[i]);
@@ -105,59 +106,59 @@ int is_ident(string s) {
 }
 
 /// <summary>
-/// Индекс слова из словаря
+/// РРЅРґРµРєСЃ СЃР»РѕРІР° РёР· СЃР»РѕРІР°СЂСЏ
 /// </summary>
-/// <param name="s">Слово</param>
-/// <returns>-1 - если слова нет в словаре, иначе индекс слова</returns>
+/// <param name="s">РЎР»РѕРІРѕ</param>
+/// <returns>-1 - РµСЃР»Рё СЃР»РѕРІР° РЅРµС‚ РІ СЃР»РѕРІР°СЂРµ, РёРЅР°С‡Рµ РёРЅРґРµРєСЃ СЃР»РѕРІР°</returns>
 int get_index(string s) {
 	auto it = _ind_term_dictionary.find(s);
 	return it == _ind_term_dictionary.end() ? -1 : it->second;
 }
 
 /// <summary>
-/// Является ли слово термианльным символом
+/// РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕРІРѕ С‚РµСЂРјРёР°РЅР»СЊРЅС‹Рј СЃРёРјРІРѕР»РѕРј
 /// </summary>
-/// <param name="s">Проверяемое слово</param>
-/// <returns>Является ли слово терминальныи символом</returns>
+/// <param name="s">РџСЂРѕРІРµСЂСЏРµРјРѕРµ СЃР»РѕРІРѕ</param>
+/// <returns>РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕРІРѕ С‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рё СЃРёРјРІРѕР»РѕРј</returns>
 bool is_terminal(string s) {
 	auto it = _ind_term_dictionary.find(s);
 	return it != _ind_term_dictionary.end() && it->second < terminals.size();
 }
 
 /// <summary>
-/// Является ли слово с индексом index терминальным символом
+/// РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕРІРѕ СЃ РёРЅРґРµРєСЃРѕРј index С‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рј СЃРёРјРІРѕР»РѕРј
 /// </summary>
-/// <param name="index">index проверяемого слова</param>
-/// <returns>Является ли слово с индексом index терминальным символом</returns>
+/// <param name="index">index РїСЂРѕРІРµСЂСЏРµРјРѕРіРѕ СЃР»РѕРІР°</param>
+/// <returns>РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕРІРѕ СЃ РёРЅРґРµРєСЃРѕРј index С‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рј СЃРёРјРІРѕР»РѕРј</returns>
 bool is_terminal(int index) {
 	return index >= 0 && index < terminals.size();
 }
 
 /// <summary>
-/// Является ли слово нетермианльным символом
+/// РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕРІРѕ РЅРµС‚РµСЂРјРёР°РЅР»СЊРЅС‹Рј СЃРёРјРІРѕР»РѕРј
 /// </summary>
-/// <param name="s">Проверяемое слово</param>
-/// <returns>Является ли слово нетерминальным символом</returns>
+/// <param name="s">РџСЂРѕРІРµСЂСЏРµРјРѕРµ СЃР»РѕРІРѕ</param>
+/// <returns>РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕРІРѕ РЅРµС‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рј СЃРёРјРІРѕР»РѕРј</returns>
 bool is_determinal(string s) {
 	auto it = _ind_term_dictionary.find(s);
 	return it != _ind_term_dictionary.end() && it->second >= terminals.size();
 }
 
 /// <summary>
-/// Является ли слово с индексом index нетерминальным символом
+/// РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕРІРѕ СЃ РёРЅРґРµРєСЃРѕРј index РЅРµС‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рј СЃРёРјРІРѕР»РѕРј
 /// </summary>
-/// <param name="index">index проверяемого слова</param>
-/// <returns>Является ли слово с индексом index нетерминальным символом</returns>
+/// <param name="index">index РїСЂРѕРІРµСЂСЏРµРјРѕРіРѕ СЃР»РѕРІР°</param>
+/// <returns>РЇРІР»СЏРµС‚СЃСЏ Р»Рё СЃР»РѕРІРѕ СЃ РёРЅРґРµРєСЃРѕРј index РЅРµС‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рј СЃРёРјРІРѕР»РѕРј</returns>
 bool is_determinal(int index) {
 	return index >= terminals.size() && index <= dictionary.size();
 }
 
 /// <summary>
-/// Разделить строки на терминальные символы
+/// Р Р°Р·РґРµР»РёС‚СЊ СЃС‚СЂРѕРєРё РЅР° С‚РµСЂРјРёРЅР°Р»СЊРЅС‹Рµ СЃРёРјРІРѕР»С‹
 /// </summary>
-/// <param name="lines">Строки</param>
-/// <returns>Полученные терминалы</returns>
-/// <exception cref="exception">Если слово не является терминалом</exception>
+/// <param name="lines">РЎС‚СЂРѕРєРё</param>
+/// <returns>РџРѕР»СѓС‡РµРЅРЅС‹Рµ С‚РµСЂРјРёРЅР°Р»С‹</returns>
+/// <exception cref="exception">Р•СЃР»Рё СЃР»РѕРІРѕ РЅРµ СЏРІР»СЏРµС‚СЃСЏ С‚РµСЂРјРёРЅР°Р»РѕРј</exception>
 vector<term*> split_on_terminals(vector<string> & lines) {
 	vector<term*> res;
 
@@ -168,7 +169,7 @@ vector<term*> split_on_terminals(vector<string> & lines) {
 			int res = is_ident(sterm);
 			string msg = "";
 			if (res == -1) msg = "Identificator length exceeds 11 symbols: line " + to_string(i + 1) + " position " + to_string(j + 1);
-			if (res == 0) 
+			if (res == 0)
 				msg = "Unknown terminal: line " + to_string(i + 1) + " position " + to_string(j + 1);
 			if (msg.empty()) sterm = "ident";
 			else throw runtime_error(msg);
@@ -191,11 +192,44 @@ vector<term*> split_on_terminals(vector<string> & lines) {
 }
 
 /// <summary>
-/// Информация о терминале
+/// РРЅС„РѕСЂРјР°С†РёСЏ Рѕ С‚РµСЂРјРёРЅР°Р»Рµ
 /// </summary>
-/// <param name="trm">Терминал</param>
-/// <returns>Строку, предоставляющую информацию о терминале </returns>
+/// <param name="trm">РўРµСЂРјРёРЅР°Р»</param>
+/// <returns>РЎС‚СЂРѕРєСѓ, РїСЂРµРґРѕСЃС‚Р°РІР»СЏСЋС‰СѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ С‚РµСЂРјРёРЅР°Р»Рµ </returns>
 string get_info(term* trm) {
 	return terminals[trm->val] + "\t\t" + to_string(trm->val) + "\t\t" +
 		to_string(trm->indLines) + "\t\t" + to_string(trm->indPos);
 };
+
+bool check_grammar(vector<term*> input_line) {
+	vector<int> magazine;
+	magazine.emplace_back(get_index(MAGAZINE_BOTTOM));
+	int ptr_input_line = 0;
+	while (true) {
+		bool ok = false;
+		for (int ind_rules : automate[input_line[ptr_input_line]->val][magazine.back()]) {
+			if (ind_rules == SUCCESS) return true;
+			if (ind_rules == -1) {
+				cout << "adding: " << dictionary[input_line[ptr_input_line]->val] << endl;
+				magazine.emplace_back(input_line[ptr_input_line]->val);
+				ptr_input_line++;
+				ok = true;
+				break;
+			}
+			if (magazine.size() < rules[ind_rules].right.size()) continue;
+			if (equal(rules[ind_rules].right.rbegin(), rules[ind_rules].right.rend(), magazine.rbegin())) {
+				magazine.erase(magazine.begin() + (magazine.size() - rules[ind_rules].right.size()), magazine.end());
+				for (int i : rules[ind_rules].right) cout << dictionary[i] << ' ';
+				cout << " => " << dictionary[rules[ind_rules].left] << endl;
+				magazine.emplace_back(rules[ind_rules].left);
+				ok = true;
+				break;
+			}
+		}
+		if (!ok) {
+			cout << "ERROR: " << dictionary[magazine.back()]  << ' ' << dictionary[input_line[ptr_input_line]->val] << endl;
+			return false;
+		}
+	}
+
+}
