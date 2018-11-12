@@ -4,11 +4,12 @@ using namespace std;
 
 template<typename... T>
 rule::rule(string left_str, const T&... rights) {
+	vector<string> args = { rights... };
 	left = get_index(left_str);
 	if (left == -1) throw runtime_error("Dictionary not include " + left_str);
 	if (!is_determinal(left)) throw runtime_error("Left part of rules can't include terminal: " + left_str);
 	right.clear();
-	for (auto&& s : initializer_list<string>{ rights... }) {
+	for (string& s : args) {
 		right.push_back(get_index(s));
 		if (right.back() == -1) throw runtime_error("Dictionary not include " + s);
 	}
@@ -44,7 +45,7 @@ void initial_rules() {
 	rules.push_back(rule("<Const>", "1"));
 	rules.push_back(rule("<Function>", "read", "(", "ident", "<Var_list>", ")", ";"));
 	rules.push_back(rule("<Function>", "write", "(", "ident", "<Var_list>", ")", ";"));
-	rules.push_back(rule("<Function>", "if", "<Expression>", "then", "<Function_list>", "else", "<Function_list>","end_if", ";"));
+	rules.push_back(rule("<Function>", "if", "<Expression>", "then", "<Function_list>", "else", "<Function_list>", "end_if", ";"));
 	rules.push_back(rule("<Function>", "<Prefix_io>", ")", ";"));
 	rules.push_back(rule("<Function>", "<Prefix_io>", ")", ";"));
 	rules.push_back(rule("<Prefix_io>", "write", "(", "ident"));

@@ -228,6 +228,7 @@ bool check_grammar(vector<term*> input_line) {
 		}
 		if (!ok) {
 			cout << "ERROR: " << dictionary[magazine.back()]  << ' ' << dictionary[input_line[ptr_input_line]->val] << endl;
+			cout << "Line: " << input_line[ptr_input_line]->indLines + 1 << " pos:" << input_line[ptr_input_line]->indPos + 1 << endl;
 			return false;
 		}
 	}

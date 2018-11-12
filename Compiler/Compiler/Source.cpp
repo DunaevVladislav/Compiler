@@ -47,7 +47,6 @@ int main(int argc, char* argv[]) {
 	for (auto t : terms) {
 		cout << get_info(t) << endl;
 	}
-	check_grammar(terms);
-	exit_error("");
+	exit_error(check_grammar(terms)?"Success":"Sequence does not belong to the grammar");
 	return 0;
 }

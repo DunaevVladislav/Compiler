@@ -9,11 +9,12 @@ vector<int>** automate;
 
 template<typename... T>
 void _add_in_automate(string magazine_top, string terminal, const T&... transitions) {
+	vector<int> args = { transitions... };
 	int term_ind = get_index(terminal);
 	if (!is_terminal(term_ind)) throw runtime_error("Terminal dictionary not include " + terminal);
 	int mag_ind = get_index(magazine_top);
 	if (mag_ind == -1) throw runtime_error("Dictionary not include " + magazine_top);
-	for (auto&& s : initializer_list<int>{ transitions... }) {
+	for (int s : args) {
 		automate[term_ind][mag_ind].push_back(s - 1);
 	}
 }
