@@ -10,10 +10,20 @@
 #include <iostream>
 using namespace std;
 
-const string END_OF_TAPE = "~`~`~";
-const string MAGAZINE_BOTTOM = "`~`~`";
+/// <summary>
+/// Конец входной ленты
+/// </summary>
+#define END_OF_TAPE  "~`~`~"
 
-const int SUCCESS = -2;
+/// <summary>
+/// Дно магазина
+/// </summary>
+#define MAGAZINE_BOTTOM  "`~`~`"
+
+/// <summary>
+/// Номер правила перехода в случае успешного завершения
+/// </summary>
+#define SUCCESS  -2
 
 /// <summary>
 /// Максимальный размер индентификатора
