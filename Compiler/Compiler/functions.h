@@ -20,7 +20,7 @@ void exit_error(const char* message);
 /// <param name="file_name">им€ файла</param>
 /// <param name="data">считанные данные</param>
 /// <returns>-1 если файл не найден, иначе количество считанных байт</returns>
-int read_file(char* file_name, char*& data);
+int read_file(const char* file_name, char*& data);
 
 /// <summary>
 /// –аздел€ет строку на линни(split by '\n')

@@ -5,6 +5,12 @@
 
 using namespace std;
 
+/// <summary>
+/// Детерминированный восходящий автомат
+/// </summary>
 extern vector<int>** automate;
 
+/// <summary>
+/// Инициализация автомата
+/// </summary>
 void initial_automate();

@@ -2,8 +2,16 @@
 #include <initializer_list>
 using namespace std;
 
+/// <summary>
+/// Объявление шаблона с переменным количеством параметров
+/// </summary>
 template<typename... T>
-rule::rule(string left_str, const T&... rights) {
+/// <summary>
+/// Конструктор rule
+/// </summary>
+/// <param name="left_str">Левая часть правила</param>
+/// <param name="...rights">Правая часть правила</param>
+rule::rule(const string& left_str, const T&... rights) {
 	vector<string> args = { rights... };
 	left = get_index(left_str);
 	if (left == -1) throw runtime_error("Dictionary not include " + left_str);
@@ -15,8 +23,14 @@ rule::rule(string left_str, const T&... rights) {
 	}
 }
 
+/// <summary>
+/// Правила
+/// </summary>
 vector<rule> rules;
 
+/// <summary>
+/// Инициализация правил
+/// </summary>
 void initial_rules() {
 	rules.push_back(rule("<Program>", "<Var_declare>", "<Calculation_descr>"));
 	rules.push_back(rule("<Var_declare>", "<Prefix_var_declare>", "logical", ";"));

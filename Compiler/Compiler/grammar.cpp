@@ -1,8 +1,6 @@
 ﻿#include "grammar.h"
 using namespace std;
 
-
-
 /// <summary>
 /// Терминальные символы
 /// </summary>
@@ -68,7 +66,7 @@ unordered_map<string, int> _ind_term_dictionary;
 /// <summary>
 /// Символы являющиесями разделителями для данной грамматкии
 /// </summary>
-unordered_set<char> _separators = {
+const unordered_set<char> _separators = {
 	';',
 	':',
 	',',
@@ -84,8 +82,8 @@ unordered_set<char> _separators = {
 /// Инициализация словарей
 /// </summary>
 void initial() {
-	for (string s : terminals) dictionary.emplace_back(s);
-	for (string s : determinals) dictionary.emplace_back(s);
+	for (string &s : terminals) dictionary.emplace_back(s);
+	for (string &s : determinals) dictionary.emplace_back(s);
 	for (int i = 0; i < dictionary.size(); ++i) {
 		_ind_term_dictionary.insert({ dictionary[i], i });
 	}
@@ -98,11 +96,13 @@ void initial() {
 /// </summary>
 /// <param name="s">Проверяемая строка</param>
 /// <returns>-1 - идентификатор, с длиной > 11; 0 - не идентификатор; 1 - идентификатор</returns>
-int is_ident(string s) {
+int is_ident(const string& s)
+{
 	bool ok = true;
 	for (int i = 0; ok && i < s.length(); ++i) ok = isalpha(s[i]);
-	if (s.length() > _MAX_IDENT_LENGTH) return -1;
-	return (int)ok;
+	if (s.length() > _MAX_IDENT_LENGTH) return LONG_IDENT;
+	if (!ok) return NOT_IDENT;
+	return IS_IDENT;
 }
 
 /// <summary>
@@ -110,7 +110,7 @@ int is_ident(string s) {
 /// </summary>
 /// <param name="s">Слово</param>
 /// <returns>-1 - если слова нет в словаре, иначе индекс слова</returns>
-int get_index(string s) {
+int get_index(const string& s) {
 	auto it = _ind_term_dictionary.find(s);
 	return it == _ind_term_dictionary.end() ? -1 : it->second;
 }
@@ -120,7 +120,7 @@ int get_index(string s) {
 /// </summary>
 /// <param name="s">Проверяемое слово</param>
 /// <returns>Является ли слово терминальныи символом</returns>
-bool is_terminal(string s) {
+bool is_terminal(const string& s) {
 	auto it = _ind_term_dictionary.find(s);
 	return it != _ind_term_dictionary.end() && it->second < terminals.size();
 }
@@ -130,7 +130,7 @@ bool is_terminal(string s) {
 /// </summary>
 /// <param name="index">index проверяемого слова</param>
 /// <returns>Является ли слово с индексом index терминальным символом</returns>
-bool is_terminal(int index) {
+bool is_terminal(const int& index) {
 	return index >= 0 && index < terminals.size();
 }
 
@@ -139,7 +139,7 @@ bool is_terminal(int index) {
 /// </summary>
 /// <param name="s">Проверяемое слово</param>
 /// <returns>Является ли слово нетерминальным символом</returns>
-bool is_determinal(string s) {
+bool is_determinal(const string& s) {
 	auto it = _ind_term_dictionary.find(s);
 	return it != _ind_term_dictionary.end() && it->second >= terminals.size();
 }
@@ -149,7 +149,7 @@ bool is_determinal(string s) {
 /// </summary>
 /// <param name="index">index проверяемого слова</param>
 /// <returns>Является ли слово с индексом index нетерминальным символом</returns>
-bool is_determinal(int index) {
+bool is_determinal(const int& index) {
 	return index >= terminals.size() && index <= dictionary.size();
 }
 
@@ -159,24 +159,23 @@ bool is_determinal(int index) {
 /// <param name="lines">Строки</param>
 /// <returns>Полученные терминалы</returns>
 /// <exception cref="exception">Если слово не является терминалом</exception>
-vector<term*> split_on_terminals(vector<string> & lines) {
+vector<term*> split_on_terminals(const vector<string> & lines) {
 	vector<term*> res;
 
-	auto add_res = [&](string sterm, int i, int j) {
+	auto add_res = [&](string sterm, const int& i, const int& j) {
 		if (sterm.empty()) return;
 		if (!is_terminal(sterm)) {
 			if (_separators.count(sterm[0])) return;
 			int res = is_ident(sterm);
 			string msg = "";
-			if (res == -1) msg = "Identificator length exceeds 11 symbols: line " + to_string(i + 1) + " position " + to_string(j + 1);
-			if (res == 0)
+			if (res == LONG_IDENT) msg = "Identificator length exceeds 11 symbols: line " + to_string(i + 1) + " position " + to_string(j + 1);
+			if (res == NOT_IDENT)
 				msg = "Unknown terminal: line " + to_string(i + 1) + " position " + to_string(j + 1);
 			if (msg.empty()) sterm = "ident";
 			else throw runtime_error(msg);
 		}
 		res.push_back(new term(get_index(sterm), i, j));
 	};
-
 	for (int i = 0; i < lines.size(); ++i) {
 		int l = 0;
 		for (int j = 0; j < lines[i].length(); ++j) {
@@ -196,9 +195,9 @@ vector<term*> split_on_terminals(vector<string> & lines) {
 /// </summary>
 /// <param name="trm">Терминал</param>
 /// <returns>Строку, предоставляющую информацию о терминале </returns>
-string get_info(term* trm) {
+string get_info(const term* trm) {
 	return terminals[trm->val] + "\t\t" + to_string(trm->val) + "\t\t" +
-		to_string(trm->indLines) + "\t\t" + to_string(trm->indPos);
+		to_string(trm->ind_lines) + "\t\t" + to_string(trm->ind_pos);
 };
 
 bool check_grammar(const vector<term*>& input_line) {
@@ -227,8 +226,8 @@ bool check_grammar(const vector<term*>& input_line) {
 			}
 		}
 		if (!ok) {
-			cout << "ERROR: " << dictionary[magazine.back()]  << ' ' << dictionary[input_line[ptr_input_line]->val] << endl;
-			cout << "Line: " << input_line[ptr_input_line]->indLines + 1 << " pos:" << input_line[ptr_input_line]->indPos + 1 << endl;
+			cout << "ERROR: " << dictionary[magazine.back()] << ' ' << dictionary[input_line[ptr_input_line]->val] << endl;
+			cout << "Line: " << input_line[ptr_input_line]->ind_lines + 1 << " pos:" << input_line[ptr_input_line]->ind_pos + 1 << endl;
 			return false;
 		}
 	}
@@ -251,20 +250,20 @@ int check_error_ident(const vector<string>& lines, const vector<term*>& terms, p
 	for (const auto& trm : terms) {
 		if (trm->val == ind_begin) after_begin = true;
 		if (trm->val == ind_ident) {
-			int ind_pos = trm->indPos;
-			while (ind_pos < lines[trm->indLines].length() &&
-				isalpha(lines[trm->indLines][ind_pos])) ind_pos++;
-			auto ident = lines[trm->indLines].substr(trm->indPos, ind_pos - trm->indPos);
+			int ind_pos = trm->ind_pos;
+			while (ind_pos < lines[trm->ind_lines].length() &&
+				isalpha(lines[trm->ind_lines][ind_pos])) ind_pos++;
+			auto ident = lines[trm->ind_lines].substr(trm->ind_pos, ind_pos - trm->ind_pos);
 			auto iter = declared_idents.find(ident);
 			if (after_begin) {
 				if (iter == declared_idents.end()) {
-					error_pos = make_pair(trm->indLines, trm->indPos);
+					error_pos = make_pair(trm->ind_lines, trm->ind_pos);
 					return UNKNOWN_IDENT;
 				}
 			}
 			else {
 				if (iter != declared_idents.end()) {
-					error_pos = make_pair(trm->indLines, trm->indPos);
+					error_pos = make_pair(trm->ind_lines, trm->ind_pos);
 					return REDCLARED_IDENT;
 				}
 				declared_idents.insert(ident);

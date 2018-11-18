@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
 	}
 	terms.push_back(new term(get_index(END_OF_TAPE), -1, -1));
 	cout << "terminals\tindex\t\tlines\t\tposition\n";
-	for (auto t : terms) {
+	for (auto& t : terms) {
 		cout << get_info(t) << endl;
 	}
 	bool check_grammar_res = check_grammar(terms);

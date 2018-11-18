@@ -5,20 +5,35 @@
 
 using namespace std;
 
+/// <summary>
+/// Детерминированный восходящий автомат
+/// </summary>
 vector<int>** automate;
 
+/// <summary>
+/// Объявление шаблона с переменным количеством параметров
+/// </summary>
 template<typename... T>
-void _add_in_automate(string magazine_top, string terminal, const T&... transitions) {
+/// <summary>
+/// Добавить в автомат переходы
+/// </summary>
+/// <param name="magazine_top">Символ на вершине автомата</param>
+/// <param name="terminal">Символ на входной ленте</param>
+/// <param name="...transitions">Допустимые переходы</param>
+void _add_in_automate(const string& magazine_top, const string& terminal, const T&... transitions) {
 	vector<int> args = { transitions... };
 	int term_ind = get_index(terminal);
 	if (!is_terminal(term_ind)) throw runtime_error("Terminal dictionary not include " + terminal);
 	int mag_ind = get_index(magazine_top);
 	if (mag_ind == -1) throw runtime_error("Dictionary not include " + magazine_top);
-	for (int s : args) {
+	for (int& s : args) {
 		automate[term_ind][mag_ind].push_back(s - 1);
 	}
 }
 
+/// <summary>
+/// Инициализация автомата
+/// </summary>
 void initial_automate() {
 	automate = new vector<int>*[terminals.size()];
 	for (int i = 0; i < terminals.size(); ++i) {

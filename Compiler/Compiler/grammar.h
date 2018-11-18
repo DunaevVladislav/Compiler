@@ -6,55 +6,10 @@
 #include <unordered_set>
 #include <string>
 #include <cctype>
-#include <unordered_set>
 #include <exception>
 #include <iostream>
+#include "grammar_defines.h"
 using namespace std;
-
-/// <summary>
-/// Конец входной ленты
-/// </summary>
-#define END_OF_TAPE  "~`~`~"
-
-/// <summary>
-/// Дно магазина
-/// </summary>
-#define MAGAZINE_BOTTOM  "`~`~`"
-
-/// <summary>
-/// Номер правила перехода в случае успешного завершения
-/// </summary>
-#define SUCCESS  -2
-
-/// <summary>
-/// Идентификатор
-/// </summary>
-#define _IDENT "ident"
-
-/// <summary>
-/// Начало программы
-/// </summary>
-#define _BEGIN  "begin"
-
-/// <summary>
-/// Неизвестный идентификатор
-/// </summary>
-#define UNKNOWN_IDENT 1
-
-/// <summary>
-/// Повторно-объявленный индентификатор
-/// </summary>
-#define REDCLARED_IDENT 0
-
-/// <summary>
-/// Нет ошибок в объявлении идентификаторов
-/// </summary>
-#define NO_ERROR_IN_DECLARE_IDENT -1
-
-/// <summary>
-/// Максимальный размер индентификатора
-/// </summary>
-#define _MAX_IDENT_LENGTH  11
 
 /// <summary>
 /// Инициализация словарей
@@ -81,42 +36,42 @@ extern vector<string> determinals;
 /// </summary>
 /// <param name="s">Проверяемая строка</param>
 /// <returns>-1 - идентификатор, с длиной > 11; 0 - не идентификатор; 1 - идентификатор</returns>
-int is_ident(string s);
+int is_ident(const string& s);
 
 /// <summary>
 /// Индекс слова из словаря
 /// </summary>
 /// <param name="s">Слово</param>
 /// <returns>-1 - если слова нет в словаре, иначе индекс слова</returns>
-int get_index(string s);
+int get_index(const string& s);
 
 /// <summary>
 /// Является ли слово термианльным символом
 /// </summary>
 /// <param name="s">Проверяемое слово</param>
 /// <returns>Является ли слово терминальныи символом</returns>
-bool is_terminal(string s);
+bool is_terminal(const string& s);
 
 /// <summary>
 /// Является ли слово с индексом index терминальным символом
 /// </summary>
 /// <param name="index">index проверяемого слова</param>
 /// <returns>Является ли слово с индексом index терминальным символом</returns>
-bool is_terminal(int index);
+bool is_terminal(const int& index);
 
 /// <summary>
 /// Является ли слово нетермианльным символом
 /// </summary>
 /// <param name="s">Проверяемое слово</param>
 /// <returns>Является ли слово нетерминальным символом</returns>
-bool is_determinal(string s);
+bool is_determinal(const string& s);
 
 /// <summary>
 /// Является ли слово с индексом index нетерминальным символом
 /// </summary>
 /// <param name="index">index проверяемого слова</param>
 /// <returns>Является ли слово с индексом index нетерминальным символом</returns>
-bool is_determinal(int index);
+bool is_determinal(const int& index);
 
 /// <summary>
 /// Терминал
@@ -129,19 +84,19 @@ struct term {
 	/// <summary>
 	/// Индекс строки, в котором встретился терминал
 	/// </summary>
-	int indLines;
+	int ind_lines;
 	/// <summary>
 	/// Позиция в строке, где найден терминал
 	/// </summary>
-	int indPos;
+	int ind_pos;
 	/// <summary>
 	/// Конструктор
 	/// </summary>
 	/// <param name="val">Индекс терминала</param>
 	/// <param name="indLines">Индекс строки, в котором встретился терминал</param>
 	/// <param name="indPos">Позиция в строке, где найден терминал</param>
-	term(int val, int indLines, int indPos) :
-		val(val), indLines(indLines), indPos(indPos) {};
+	term(const int& val, const int& indLines, const int& indPos) :
+		val(val), ind_lines(indLines), ind_pos(indPos) {};
 };
 
 /// <summary>
@@ -150,14 +105,14 @@ struct term {
 /// <param name="lines">Строки</param>
 /// <returns>Полученные терминалы</returns>
 /// <exception cref="exception">Если слово не является терминалом</exception>
-vector<term*> split_on_terminals(vector<string> & lines);
+vector<term*> split_on_terminals(const vector<string> & lines);
 
 /// <summary>
 /// Информация о терминале
 /// </summary>
 /// <param name="trm">Терминал</param>
 /// <returns>Строку, предоставляющую информацию о терминале </returns>
-string get_info(term* trm);
+string get_info(const term* trm);
 
 bool check_grammar(const vector<term*>& input_line);
 

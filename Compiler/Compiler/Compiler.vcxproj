@@ -130,6 +130,7 @@
     <ClInclude Include="automate.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="grammar.h" />
+    <ClInclude Include="grammar_defines.h" />
     <ClInclude Include="rules.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

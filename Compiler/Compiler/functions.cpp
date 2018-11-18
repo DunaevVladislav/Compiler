@@ -19,7 +19,7 @@ void exit_error(const char* message) {
 /// <param name="file_name">имя файла</param>
 /// <param name="data">считанные данные</param>
 /// <returns>-1 если файл не найден, иначе количество считанных байт</returns>
-int read_file(char* file_name, char*& data) {
+int read_file(const char* file_name, char*& data) {
 	FILE* source = fopen(file_name, "r");
 	if (!source) return -1;
 	size_t source_size = 0;
