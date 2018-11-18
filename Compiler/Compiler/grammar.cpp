@@ -200,14 +200,22 @@ string get_info(const term* trm) {
 		to_string(trm->ind_lines) + "\t\t" + to_string(trm->ind_pos);
 };
 
-bool check_grammar(const vector<term*>& input_line) {
-	vector<int> magazine;
+/// <summary>
+/// Восходящий анализ по заданным правилам
+/// </summary>
+/// <param name="input_line">Терминалы на входной ленте</param>
+/// <returns>Последовательность номером правил, которые приведут к получению исходной ленты</returns>
+vector<int> upstream_analysis(const vector<term*>& input_line) {
+	vector<int> magazine, form_rules;
 	magazine.emplace_back(get_index(MAGAZINE_BOTTOM));
 	int ptr_input_line = 0;
 	while (true) {
 		bool ok = false;
-		for (int ind_rules : automate[input_line[ptr_input_line]->val][magazine.back()]) {
-			if (ind_rules == SUCCESS) return true;
+		for (int& ind_rules : automate[input_line[ptr_input_line]->val][magazine.back()]) {
+			if (ind_rules == SUCCESS) {
+				reverse(form_rules.begin(), form_rules.end());
+				return form_rules;
+			}
 			if (ind_rules == -1) {
 				cout << "adding: " << dictionary[input_line[ptr_input_line]->val] << endl;
 				magazine.emplace_back(input_line[ptr_input_line]->val);
@@ -218,6 +226,7 @@ bool check_grammar(const vector<term*>& input_line) {
 			if (magazine.size() < rules[ind_rules].right.size()) continue;
 			if (equal(rules[ind_rules].right.rbegin(), rules[ind_rules].right.rend(), magazine.rbegin())) {
 				magazine.erase(magazine.begin() + (magazine.size() - rules[ind_rules].right.size()), magazine.end());
+				form_rules.emplace_back(ind_rules);
 				for (int i : rules[ind_rules].right) cout << dictionary[i] << ' ';
 				cout << " => " << dictionary[rules[ind_rules].left] << endl;
 				magazine.emplace_back(rules[ind_rules].left);
@@ -226,12 +235,28 @@ bool check_grammar(const vector<term*>& input_line) {
 			}
 		}
 		if (!ok) {
-			cout << "ERROR: " << dictionary[magazine.back()] << ' ' << dictionary[input_line[ptr_input_line]->val] << endl;
-			cout << "Line: " << input_line[ptr_input_line]->ind_lines + 1 << " pos:" << input_line[ptr_input_line]->ind_pos + 1 << endl;
-			return false;
+			string error = "Invalid sequence: line " +
+				to_string(input_line[ptr_input_line]->ind_lines + 1) +
+				" pos " + to_string(input_line[ptr_input_line]->ind_pos + 1);
+			throw runtime_error(error);
 		}
 	}
 
+}
+
+/// <summary>
+/// Возвращает идентификатор из входной ленты
+/// </summary>
+/// <param name="lines">Входная лента</param>
+/// <param name="ind_lines">Индекс строки</param>
+/// <param name="ind_pos">Индекс позиции начала идентификатора</param>
+/// <returns>Идентификатор</returns>
+string get_real_ident(const vector<string>& lines, const int & ind_lines, const int & ind_start_pos)
+{
+	int ind_pos = ind_start_pos;
+	while (ind_pos < lines[ind_lines].length() &&
+		isalpha(lines[ind_lines][ind_pos])) ind_pos++;
+	return lines[ind_lines].substr(ind_start_pos, ind_pos - ind_start_pos);
 }
 
 /// <summary>
@@ -250,10 +275,7 @@ int check_error_ident(const vector<string>& lines, const vector<term*>& terms, p
 	for (const auto& trm : terms) {
 		if (trm->val == ind_begin) after_begin = true;
 		if (trm->val == ind_ident) {
-			int ind_pos = trm->ind_pos;
-			while (ind_pos < lines[trm->ind_lines].length() &&
-				isalpha(lines[trm->ind_lines][ind_pos])) ind_pos++;
-			auto ident = lines[trm->ind_lines].substr(trm->ind_pos, ind_pos - trm->ind_pos);
+			auto ident = get_real_ident(lines, trm->ind_lines, trm->ind_pos);
 			auto iter = declared_idents.find(ident);
 			if (after_begin) {
 				if (iter == declared_idents.end()) {

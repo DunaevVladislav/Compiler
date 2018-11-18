@@ -114,7 +114,21 @@ vector<term*> split_on_terminals(const vector<string> & lines);
 /// <returns>Строку, предоставляющую информацию о терминале </returns>
 string get_info(const term* trm);
 
-bool check_grammar(const vector<term*>& input_line);
+/// <summary>
+/// Восходящий анализ по заданным правилам
+/// </summary>
+/// <param name="input_line">Терминалы на входной ленте</param>
+/// <returns>Последовательность номером правил, которые приведут к получению исходной ленты</returns>
+vector<int> upstream_analysis(const vector<term*>& input_line);
+
+/// <summary>
+/// Возвращает идентификатор из входной ленты
+/// </summary>
+/// <param name="lines">Входная лента</param>
+/// <param name="ind_lines">Индекс строки</param>
+/// <param name="ind_pos">Индекс позиции начала идентификатора</param>
+/// <returns>Идентификатор</returns>
+string get_real_ident(const vector<string>& lines, const int& ind_lines, const int& ind_pos);
 
 /// <summary>
 /// Проверка кода на неизвестные идентификаторы или повторное объявление

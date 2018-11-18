@@ -47,8 +47,13 @@ int main(int argc, char* argv[]) {
 	for (auto& t : terms) {
 		cout << get_info(t) << endl;
 	}
-	bool check_grammar_res = check_grammar(terms);
-	if (!check_grammar_res) exit_error("Sequence does not belong to the grammar");
+	vector<int> form_rules;
+	try {
+		form_rules = upstream_analysis(terms);
+	}
+	catch (exception& e) {
+		exit_error(e.what());
+	}
 	pair<int, int> error_pos;
 	int check_ident_res = check_error_ident(lines, terms, error_pos);
 	if (check_ident_res != NO_ERROR_IN_DECLARE_IDENT) {
