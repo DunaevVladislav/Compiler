@@ -201,7 +201,7 @@ string get_info(term* trm) {
 		to_string(trm->indLines) + "\t\t" + to_string(trm->indPos);
 };
 
-bool check_grammar(vector<term*> input_line) {
+bool check_grammar(const vector<term*>& input_line) {
 	vector<int> magazine;
 	magazine.emplace_back(get_index(MAGAZINE_BOTTOM));
 	int ptr_input_line = 0;
@@ -233,4 +233,43 @@ bool check_grammar(vector<term*> input_line) {
 		}
 	}
 
+}
+
+/// <summary>
+/// Проверка кода на неизвестные идентификаторы или повторное объявление
+/// </summary>
+/// <param name="lines">Исходный код</param>
+/// <param name="terms">Терминалы</param>
+/// <param name="error_pos">Позиция найденного ошибочного идентификатора</param>
+/// <returns>-1 - не найден ошибочный идентификатор, 0 - повтороное объявление, 1 - неизвестный идентификатор</returns>
+int check_error_ident(const vector<string>& lines, const vector<term*>& terms, pair<int, int>& error_pos)
+{
+	int ind_begin = get_index(_BEGIN);
+	int ind_ident = get_index(_IDENT);
+	unordered_set<string> declared_idents;
+	bool after_begin = false;
+	for (const auto& trm : terms) {
+		if (trm->val == ind_begin) after_begin = true;
+		if (trm->val == ind_ident) {
+			int ind_pos = trm->indPos;
+			while (ind_pos < lines[trm->indLines].length() &&
+				isalpha(lines[trm->indLines][ind_pos])) ind_pos++;
+			auto ident = lines[trm->indLines].substr(trm->indPos, ind_pos - trm->indPos);
+			auto iter = declared_idents.find(ident);
+			if (after_begin) {
+				if (iter == declared_idents.end()) {
+					error_pos = make_pair(trm->indLines, trm->indPos);
+					return UNKNOWN_IDENT;
+				}
+			}
+			else {
+				if (iter != declared_idents.end()) {
+					error_pos = make_pair(trm->indLines, trm->indPos);
+					return REDCLARED_IDENT;
+				}
+				declared_idents.insert(ident);
+			}
+		}
+	}
+	return NO_ERROR_IN_DECLARE_IDENT;
 }

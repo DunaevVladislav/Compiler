@@ -6,6 +6,7 @@
 #include <unordered_set>
 #include <string>
 #include <cctype>
+#include <unordered_set>
 #include <exception>
 #include <iostream>
 using namespace std;
@@ -26,9 +27,34 @@ using namespace std;
 #define SUCCESS  -2
 
 /// <summary>
+/// Идентификатор
+/// </summary>
+#define _IDENT "ident"
+
+/// <summary>
+/// Начало программы
+/// </summary>
+#define _BEGIN  "begin"
+
+/// <summary>
+/// Неизвестный идентификатор
+/// </summary>
+#define UNKNOWN_IDENT 1
+
+/// <summary>
+/// Повторно-объявленный индентификатор
+/// </summary>
+#define REDCLARED_IDENT 0
+
+/// <summary>
+/// Нет ошибок в объявлении идентификаторов
+/// </summary>
+#define NO_ERROR_IN_DECLARE_IDENT -1
+
+/// <summary>
 /// Максимальный размер индентификатора
 /// </summary>
-const size_t _MAX_IDENT_LENGTH = 11;
+#define _MAX_IDENT_LENGTH  11
 
 /// <summary>
 /// Инициализация словарей
@@ -133,4 +159,13 @@ vector<term*> split_on_terminals(vector<string> & lines);
 /// <returns>Строку, предоставляющую информацию о терминале </returns>
 string get_info(term* trm);
 
-bool check_grammar(vector<term*> input_line);
+bool check_grammar(const vector<term*>& input_line);
+
+/// <summary>
+/// Проверка кода на неизвестные идентификаторы или повторное объявление
+/// </summary>
+/// <param name="lines">Исходный код</param>
+/// <param name="terms">Терминалы</param>
+/// <param name="error_pos">Позиция найденного ошибочного идентификатора</param>
+/// <returns>-1 - не найден ошибочный идентификатор, 0 - повтороное объявление, 1 - неизвестный идентификатор</returns>
+int check_error_ident(const vector<string>& lines, const vector<term*>& terms, pair<int, int>&error_pos);

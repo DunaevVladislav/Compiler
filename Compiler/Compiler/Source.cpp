@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
 	char* file_name = argv[1], *source;
 	thread thr([&]() {
 		try {
-			initial(); 
+			initial();
 		}
 		catch (exception& e) {
 			exit_error(e.what());
@@ -47,6 +47,17 @@ int main(int argc, char* argv[]) {
 	for (auto t : terms) {
 		cout << get_info(t) << endl;
 	}
-	exit_error(check_grammar(terms)?"Success":"Sequence does not belong to the grammar");
+	bool check_grammar_res = check_grammar(terms);
+	if (!check_grammar_res) exit_error("Sequence does not belong to the grammar");
+	pair<int, int> error_pos;
+	int check_ident_res = check_error_ident(lines, terms, error_pos);
+	if (check_ident_res != NO_ERROR_IN_DECLARE_IDENT) {
+		string error;
+		if (check_ident_res == UNKNOWN_IDENT) error = "Unknown identifier: ";
+		if (check_ident_res == REDCLARED_IDENT) error = "Redclared identifier: ";
+		error.append("line " + to_string(error_pos.first + 1) + " position " + to_string(error_pos.second + 1));
+		exit_error(error.c_str());
+	}
+	exit_error("SUCCESS");
 	return 0;
 }
