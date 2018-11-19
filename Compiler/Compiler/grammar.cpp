@@ -82,13 +82,14 @@ const unordered_set<char> _separators = {
 /// Инициализация словарей
 /// </summary>
 void initial() {
-	for (string &s : terminals) dictionary.emplace_back(s);
+    for (string &s : terminals) dictionary.emplace_back(s);
 	for (string &s : determinals) dictionary.emplace_back(s);
 	for (int i = 0; i < dictionary.size(); ++i) {
 		_ind_term_dictionary.insert({ dictionary[i], i });
 	}
-	initial_rules();
+	thread thread1(initial_rules);
 	initial_automate();
+	thread1.join();
 }
 
 /// <summary>
@@ -166,10 +167,10 @@ vector<term*> split_on_terminals(const vector<string> & lines) {
 		if (sterm.empty()) return;
 		if (!is_terminal(sterm)) {
 			if (_separators.count(sterm[0])) return;
-			int res = is_ident(sterm);
-			string msg = "";
-			if (res == LONG_IDENT) msg = "Identificator length exceeds 11 symbols: line " + to_string(i + 1) + " position " + to_string(j + 1);
-			if (res == NOT_IDENT)
+			int rs = is_ident(sterm);
+			string msg;
+			if (rs == LONG_IDENT) msg = "Identificator length exceeds 11 symbols: line " + to_string(i + 1) + " position " + to_string(j + 1);
+			if (rs == NOT_IDENT)
 				msg = "Unknown terminal: line " + to_string(i + 1) + " position " + to_string(j + 1);
 			if (msg.empty()) sterm = "ident";
 			else throw runtime_error(msg);
@@ -286,7 +287,7 @@ int check_error_ident(const vector<string>& lines, const vector<term*>& terms, p
 			else {
 				if (iter != declared_idents.end()) {
 					error_pos = make_pair(trm->ind_lines, trm->ind_pos);
-					return REDCLARED_IDENT;
+					return REDECLARED_IDENT;
 				}
 				declared_idents.insert(ident);
 			}

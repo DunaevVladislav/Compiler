@@ -1,5 +1,4 @@
 #include "rules.h"
-#include <initializer_list>
 using namespace std;
 
 /// <summary>
@@ -32,36 +31,36 @@ vector<rule> rules;
 /// Инициализация правил
 /// </summary>
 void initial_rules() {
-	rules.push_back(rule("<Program>", "<Var_declare>", "<Calculation_descr>"));
-	rules.push_back(rule("<Var_declare>", "<Prefix_var_declare>", "logical", ";"));
-	rules.push_back(rule("<Prefix_var_declare>", "var", "ident", ":"));
-	rules.push_back(rule("<Prefix_var_declare>", "var", "ident", "<Var_list>", ":"));
-	rules.push_back(rule("<Var_list>", ",", "ident", "<Var_list>"));
-	rules.push_back(rule("<Var_list>", ",", "ident"));
-	rules.push_back(rule("<Calculation_descr>", "begin", "<Function_list>", "end"));
-	rules.push_back(rule("<Function_list>", "<Assignment>"));
-	rules.push_back(rule("<Function_list>", "<Assignment>", "<Function_list>"));
-	rules.push_back(rule("<Function_list>", "<Function>"));
-	rules.push_back(rule("<Function_list>", "<Function>", "<Function_list>"));
-	rules.push_back(rule("<Assignment>", "ident", "=", "<Expression>", ";"));
-	rules.push_back(rule("<Expression>", "<Unary_op>", "<Sub_expression>"));
-	rules.push_back(rule("<Expression>", "<Sub_expression>"));
-	rules.push_back(rule("<Sub_expression>", "(", "<Expression>", ")"));
-	rules.push_back(rule("<Sub_expression>", "<Operand>"));
-	rules.push_back(rule("<Sub_expression>", "<Sub_expression>", "<Binary_op>", "<Sub_expression>"));
-	rules.push_back(rule("<Unary_op>", "not"));
-	rules.push_back(rule("<Binary_op>", "and"));
-	rules.push_back(rule("<Binary_op>", "or"));
-	rules.push_back(rule("<Binary_op>", "equ"));
-	rules.push_back(rule("<Operand>", "ident"));
-	rules.push_back(rule("<Operand>", "<Const>"));
-	rules.push_back(rule("<Const>", "0"));
-	rules.push_back(rule("<Const>", "1"));
-	rules.push_back(rule("<Function>", "read", "(", "ident", "<Var_list>", ")", ";"));
-	rules.push_back(rule("<Function>", "write", "(", "ident", "<Var_list>", ")", ";"));
-	rules.push_back(rule("<Function>", "if", "<Expression>", "then", "<Function_list>", "else", "<Function_list>", "end_if", ";"));
-	rules.push_back(rule("<Function>", "<Prefix_io>", ")", ";"));
-	rules.push_back(rule("<Function>", "<Prefix_io>", ")", ";"));
-	rules.push_back(rule("<Prefix_io>", "write", "(", "ident"));
-	rules.push_back(rule("<Prefix_io>", "read", "(", "ident"));
+	rules.emplace_back(rule("<Program>", "<Var_declare>", "<Calculation_descr>"));
+	rules.emplace_back(rule("<Var_declare>", "<Prefix_var_declare>", "logical", ";"));
+	rules.emplace_back(rule("<Prefix_var_declare>", "var", "ident", ":"));
+	rules.emplace_back(rule("<Prefix_var_declare>", "var", "ident", "<Var_list>", ":"));
+	rules.emplace_back(rule("<Var_list>", ",", "ident", "<Var_list>"));
+	rules.emplace_back(rule("<Var_list>", ",", "ident"));
+	rules.emplace_back(rule("<Calculation_descr>", "begin", "<Function_list>", "end"));
+	rules.emplace_back(rule("<Function_list>", "<Assignment>"));
+	rules.emplace_back(rule("<Function_list>", "<Assignment>", "<Function_list>"));
+	rules.emplace_back(rule("<Function_list>", "<Function>"));
+	rules.emplace_back(rule("<Function_list>", "<Function>", "<Function_list>"));
+	rules.emplace_back(rule("<Assignment>", "ident", "=", "<Expression>", ";"));
+	rules.emplace_back(rule("<Expression>", "<Unary_op>", "<Sub_expression>"));
+	rules.emplace_back(rule("<Expression>", "<Sub_expression>"));
+	rules.emplace_back(rule("<Sub_expression>", "(", "<Expression>", ")"));
+	rules.emplace_back(rule("<Sub_expression>", "<Operand>"));
+	rules.emplace_back(rule("<Sub_expression>", "<Sub_expression>", "<Binary_op>", "<Sub_expression>"));
+	rules.emplace_back(rule("<Unary_op>", "not"));
+	rules.emplace_back(rule("<Binary_op>", "and"));
+	rules.emplace_back(rule("<Binary_op>", "or"));
+	rules.emplace_back(rule("<Binary_op>", "equ"));
+	rules.emplace_back(rule("<Operand>", "ident"));
+	rules.emplace_back(rule("<Operand>", "<Const>"));
+	rules.emplace_back(rule("<Const>", "0"));
+	rules.emplace_back(rule("<Const>", "1"));
+	rules.emplace_back(rule("<Function>", "read", "(", "ident", "<Var_list>", ")", ";"));
+	rules.emplace_back(rule("<Function>", "write", "(", "ident", "<Var_list>", ")", ";"));
+	rules.emplace_back(rule("<Function>", "if", "<Expression>", "then", "<Function_list>", "else", "<Function_list>", "end_if", ";"));
+	rules.emplace_back(rule("<Function>", "<Prefix_io>", ")", ";"));
+	rules.emplace_back(rule("<Function>", "<Prefix_io>", ")", ";"));
+	rules.emplace_back(rule("<Prefix_io>", "write", "(", "ident"));
+	rules.emplace_back(rule("<Prefix_io>", "read", "(", "ident"));
 }

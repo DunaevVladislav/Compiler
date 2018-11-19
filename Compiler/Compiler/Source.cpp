@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
 	if (check_ident_res != NO_ERROR_IN_DECLARE_IDENT) {
 		string error;
 		if (check_ident_res == UNKNOWN_IDENT) error = "Unknown identifier: ";
-		if (check_ident_res == REDCLARED_IDENT) error = "Redclared identifier: ";
+		if (check_ident_res == REDECLARED_IDENT) error = "Redclared identifier: ";
 		error.append("line " + to_string(error_pos.first + 1) + " position " + to_string(error_pos.second + 1));
 		exit_error(error.c_str());
 	}

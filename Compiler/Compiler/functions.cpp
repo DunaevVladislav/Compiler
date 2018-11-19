@@ -29,7 +29,7 @@ int read_file(const char* file_name, char*& data) {
 	for (size_t i = 0; i < source_size; ++i) data[i] = getc(source);
 	data[source_size] = '\0';
 	fclose(source);
-	return source_size;
+	return static_cast<int>(source_size);
 }
 
 /// <summary>

@@ -26,7 +26,7 @@ struct rule {
 	/// </summary>
 	/// <param name="left_str">Левая часть правила</param>
 	/// <param name="...rights">Правая часть правила</param>
-	rule(const string& left_str, const T&... rights);
+	explicit rule(const string& left_str, const T&... rights);
 };
 
 /// <summary>

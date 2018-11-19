@@ -31,7 +31,7 @@
 /// <summary>
 /// Повторно-объявленный индентификатор
 /// </summary>
-#define REDCLARED_IDENT 0
+#define REDECLARED_IDENT 0
 
 /// <summary>
 /// Нет ошибок в объявлении идентификаторов

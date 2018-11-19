@@ -8,6 +8,8 @@
 #include <cctype>
 #include <exception>
 #include <iostream>
+#include <algorithm>
+#include <thread>
 #include "grammar_defines.h"
 using namespace std;
 
