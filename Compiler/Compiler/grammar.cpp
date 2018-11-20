@@ -256,7 +256,7 @@ vector<int> upstream_analysis(const vector<term*>& input_line) {
 			if (ind_rules == -1) {
 				if (out_analysis) {
 					out_function();
-					out_analysis_dscr << ' ' << "TRANSFER" << endl << endl;
+					out_analysis_dscr << "TRANSFER" << endl << endl;
 				}
 				magazine.emplace_back(input_line[ptr_input_line]->val);
 				ptr_input_line++;

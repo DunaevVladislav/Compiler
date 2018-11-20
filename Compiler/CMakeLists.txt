@@ -17,4 +17,6 @@ add_executable(Compiler
         Compiler/rules.h
         Compiler/grammar.cpp
         Compiler/grammar.h
+        Compiler/arguments.cpp
+        Compiler/arguments.h
         Compiler/Source.cpp)
