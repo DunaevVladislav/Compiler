@@ -117,6 +117,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="arguments.cpp" />
     <ClCompile Include="automate.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="grammar.cpp" />
@@ -127,6 +128,7 @@
     <None Include="code" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="arguments.h" />
     <ClInclude Include="automate.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="grammar.h" />

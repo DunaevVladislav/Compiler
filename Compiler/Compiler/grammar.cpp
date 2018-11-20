@@ -202,23 +202,62 @@ string get_info(const term* trm) {
 };
 
 /// <summary>
+/// Выводит оставшуюся входную ленту с позиции start_pos
+/// </summary>
+/// <param name="input_line">Входная лента</param>
+/// <param name="start_pos">Позиция, с которой осуществляется вывод</param>
+/// <param name="out">Дескриптор файла для вывода</param>
+void _out_input_line_from(const vector<term*>& input_line, const int& start_pos, ofstream& out) {
+	for (int i = start_pos; i < input_line.size(); ++i) {
+		out << dictionary[input_line[i]->val] << ' ';
+	}
+}
+
+/// <summary>
+/// Выводит магазин лексикографического разбора
+/// </summary>
+/// <param name="magazine">Магазин</param>
+/// <param name="out">Файловый дескриптор вывода</param>
+void _out_magazine(const vector<int>& magazine, ofstream& out) {
+	for (auto it = magazine.rbegin(); it != magazine.rend(); ++it) {
+		out << dictionary[*it] << ' ';
+	}
+}
+
+/// <summary>
 /// Восходящий анализ по заданным правилам
 /// </summary>
 /// <param name="input_line">Терминалы на входной ленте</param>
 /// <returns>Последовательность номером правил, которые приведут к получению исходной ленты</returns>
 vector<int> upstream_analysis(const vector<term*>& input_line) {
+	ofstream out_analysis_dscr;
+	if (out_analysis) out_analysis_dscr.open(DEFAULT_ANALYSIS_FILE);
 	vector<int> magazine, form_rules;
 	magazine.emplace_back(get_index(MAGAZINE_BOTTOM));
 	int ptr_input_line = 0;
+	auto out_function = [&]() {
+		_out_input_line_from(input_line, ptr_input_line, out_analysis_dscr);
+		out_analysis_dscr << endl;
+		_out_magazine(magazine, out_analysis_dscr);
+		out_analysis_dscr << endl;
+	};
+
 	while (true) {
 		bool ok = false;
 		for (int& ind_rules : automate[input_line[ptr_input_line]->val][magazine.back()]) {
 			if (ind_rules == SUCCESS) {
+				if (out_analysis) {
+					out_analysis_dscr << "SUCCESS\n";
+					out_analysis_dscr.close();
+				}
 				reverse(form_rules.begin(), form_rules.end());
 				return form_rules;
 			}
 			if (ind_rules == -1) {
-				cout << "adding: " << dictionary[input_line[ptr_input_line]->val] << endl;
+				if (out_analysis) {
+					out_function();
+					out_analysis_dscr << ' ' << "TRANSFER" << endl << endl;
+				}
 				magazine.emplace_back(input_line[ptr_input_line]->val);
 				ptr_input_line++;
 				ok = true;
@@ -226,19 +265,31 @@ vector<int> upstream_analysis(const vector<term*>& input_line) {
 			}
 			if (magazine.size() < rules[ind_rules].right.size()) continue;
 			if (equal(rules[ind_rules].right.rbegin(), rules[ind_rules].right.rend(), magazine.rbegin())) {
+				if (out_analysis) {
+					out_function();
+					out_analysis_dscr << "CONVOLUTION " << ind_rules + 1 << ": ";
+				}
 				magazine.erase(magazine.begin() + (magazine.size() - rules[ind_rules].right.size()), magazine.end());
 				form_rules.emplace_back(ind_rules);
-				for (int i : rules[ind_rules].right) cout << dictionary[i] << ' ';
-				cout << " => " << dictionary[rules[ind_rules].left] << endl;
+				if (out_analysis) {
+					for (int i : rules[ind_rules].right) out_analysis_dscr << dictionary[i] << ' ';
+					out_analysis_dscr << " => " << dictionary[rules[ind_rules].left];
+					out_analysis_dscr << endl << endl;
+				}
 				magazine.emplace_back(rules[ind_rules].left);
 				ok = true;
 				break;
 			}
 		}
 		if (!ok) {
+			if (out_analysis) out_analysis_dscr << "ERROR: ";
 			string error = "Invalid sequence: line " +
 				to_string(input_line[ptr_input_line]->ind_lines + 1) +
 				" pos " + to_string(input_line[ptr_input_line]->ind_pos + 1);
+			if (out_analysis) {
+				out_analysis_dscr << error << endl;
+				out_analysis_dscr.close();
+			}
 			throw runtime_error(error);
 		}
 	}

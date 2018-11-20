@@ -19,6 +19,7 @@ using namespace std;
 /// <returns>код ошикбки</returns>
 int main(int argc, char* argv[]) {
 	if (argc == 1) exit_error("Choice file");
+	thread parce_thread([&]() {parce_args(argc - 1, argv + 1); });
 
 	char* file_name = argv[1], *source;
 	thread thr([&]() {
@@ -33,7 +34,7 @@ int main(int argc, char* argv[]) {
 
 	thr.join();
 	vector<string> lines = split_lines(source);
-
+	parce_thread.join();
 
 	vector<term*> terms;
 	try {

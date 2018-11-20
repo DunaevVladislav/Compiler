@@ -1,22 +1,9 @@
 var
-	a,av,v:logical;
+	a:logical;
 begin
 	if (not a) then
-		av = 1;
+		read(a);
 	else
-		av = not 1;
-		if 1 then
-			write(a);
-		else 
-			read(av);
-		end_if;
+		write(a);
 	end_if;
-	read(a, a, a, a, a, a, a, a, a, a);
-	write(av);
-	a = ((1 equ 0) and (av or a)) equ ((1 equ 0) and (av or a));
-	a = a;
-	a = 0;
-	a = 1;
-	a = not v;
-	a = ((((((((((v))))))))));
 end

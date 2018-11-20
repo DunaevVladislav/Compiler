@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "rules.h"
 #include "automate.h"
+#include "arguments.h"
+#include "grammar_defines.h"
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
@@ -10,7 +12,7 @@
 #include <iostream>
 #include <algorithm>
 #include <thread>
-#include "grammar_defines.h"
+#include <fstream>
 using namespace std;
 
 /// <summary>
