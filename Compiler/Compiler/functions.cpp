@@ -66,3 +66,18 @@ char* parce_code(const char* source, size_t source_size) {
 	code[ptr] = '\0';
 	return code;
 }
+
+/// <summary>
+/// ¬ыводит информацию о разборе исходного кода на терминалы (если установлен соотвествующий аргумент)
+/// </summary>
+/// <param name="terms">“ерминалы</param>
+void output_terminal_analysis(const vector<term*>& terms)
+{
+	if (!out_terminal_analysis) return;	
+	ofstream out(DEFAULT_TERMINAL_ANALYSIS_FILE);
+	out << "terminals\tindex\t\tlines\t\tposition\n";
+	for (auto& t : terms) {
+		out << get_info(t) << endl;
+	}
+	out.close();
+}

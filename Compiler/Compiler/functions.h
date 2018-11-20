@@ -1,11 +1,13 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
+#include "grammar.h"
 #include <cstdio>
 #include <cctype>
 #include <stdio.h>
 #include <vector>
 #include <string>
 #include <string.h>
+#include <fstream>
 using namespace std;
 
 /// <summary>
@@ -36,3 +38,9 @@ vector<string> split_lines(char*& data);
 /// <param name="source_size">размер исходного кода</param>
 /// <returns>результат обработки</returns>
 char* parce_code(const char* source, size_t source_size = 0);
+
+/// <summary>
+/// ¬ыводит информацию о разборе исходного кода на терминалы (если установлен соотвествующий аргумент)
+/// </summary>
+/// <param name="terms">“ерминалы</param>
+void output_terminal_analysis(const vector<term*>& terms);

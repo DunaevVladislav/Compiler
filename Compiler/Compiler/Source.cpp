@@ -16,7 +16,7 @@ using namespace std;
 /// </summary>
 /// <param name="argc">количество аргументов командной строки</param>
 /// <param name="argv">аргументы командной строки</param>
-/// <returns>код ошикбки</returns>
+/// <returns>код ошибки</returns>
 int main(int argc, char* argv[]) {
 	if (argc == 1) exit_error("Choice file");
 	thread parce_thread([&]() {parce_args(argc - 1, argv + 1); });
@@ -44,10 +44,7 @@ int main(int argc, char* argv[]) {
 		exit_error(e.what());
 	}
 	terms.push_back(new term(get_index(END_OF_TAPE), -1, -1));
-	cout << "terminals\tindex\t\tlines\t\tposition\n";
-	for (auto& t : terms) {
-		cout << get_info(t) << endl;
-	}
+	output_terminal_analysis(terms);
 	vector<int> form_rules;
 	try {
 		form_rules = upstream_analysis(terms);
