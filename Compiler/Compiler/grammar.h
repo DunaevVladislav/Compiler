@@ -3,6 +3,7 @@
 #include "automate.h"
 #include "arguments.h"
 #include "grammar_defines.h"
+#include "translator.h"
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>

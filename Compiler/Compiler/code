@@ -1,9 +1,11 @@
 var
-	a:logical;
+	a, av:logical;
 begin
 	if (not a) then
 		read(a);
+		av = a or 1;
 	else
-		write(a);
+		av = a and 1;
+		write(av);
 	end_if;
 end

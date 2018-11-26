@@ -90,6 +90,7 @@ void initial() {
 	thread thread1(initial_rules);
 	initial_automate();
 	thread1.join();
+	initial_translation();
 }
 
 /// <summary>

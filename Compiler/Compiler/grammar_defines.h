@@ -57,3 +57,23 @@
 /// Идентификатор
 /// </summary>
 #define IS_IDENT 1
+
+/// <summary>
+/// Переход на новую строку
+/// </summary>
+#define _NL + "\n" +
+
+/// <summary>
+/// Конструкция, за которой следует индекс лексемы
+/// </summary>
+#define _START_INDEX_OF_LEXEM "{!"
+
+/// <summary>
+/// Конструкция, которая завершает индекс лексемы
+/// </summary>
+#define _END_INDEX_OF_LEXEM "}"
+
+/// <summary>
+/// Генерирует новый индекс при использование правила трансляции
+/// </summary>
+#define _NEW_INDEX "{@I}"

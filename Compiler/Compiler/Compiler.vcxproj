@@ -123,6 +123,7 @@
     <ClCompile Include="grammar.cpp" />
     <ClCompile Include="rules.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="translator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="code" />
@@ -134,6 +135,7 @@
     <ClInclude Include="grammar.h" />
     <ClInclude Include="grammar_defines.h" />
     <ClInclude Include="rules.h" />
+    <ClInclude Include="translator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
