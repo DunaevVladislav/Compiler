@@ -21,10 +21,10 @@ inline translator_node::translator_node(const string& str)
 		auto it = find(rules[cur_rules].right.begin(), rules[cur_rules].right.end(), ind_lexem );
 		auto fst = it;
 		if (it == rules[cur_rules].right.end()) throw runtime_error((string)"Not found \"" + lexem + "\" in translation rules " + to_string(tranlation_rules.size() + 1));
-		while (count(lexeme_index.begin(), lexeme_index.end(), (it - rules[cur_rules].right.begin())))
+		while (count(lexeme_indexes.begin(), lexeme_indexes.end(), (it - rules[cur_rules].right.begin())))
 			it = find(it + 1, rules[cur_rules].right.end(),ind_lexem);
 		if (it == rules[cur_rules].right.end())	it = fst;
-		lexeme_index.emplace_back(it - rules[cur_rules].right.begin());
+		lexeme_indexes.emplace_back(it - rules[cur_rules].right.begin());
 		prev = pos + 1;
 	}
 	value.emplace_back(str.substr(prev));
@@ -38,7 +38,7 @@ vector<translator_node> tranlation_rules;
 /// <summary>
 /// Первые еще не использованный индекс в правилах
 /// </summary>
-unsigned int _first_unused_index;
+unsigned int _first_unused_index = 0;
 
 /// <summary>
 /// Инициализация транслятора
@@ -64,6 +64,7 @@ void initial_translation()
 		"pop ecx" _NL
 		"pop eax" _NL
 		"}}" _NL
+		"char __format[4] = \"%hu\";" _NL
 		_START_INDEX_OF_LEXEM + "<Var_declare>" + _END_INDEX_OF_LEXEM _NL
 		_START_INDEX_OF_LEXEM + "<Calculation_descr>" + _END_INDEX_OF_LEXEM 
 	);
@@ -134,7 +135,7 @@ void initial_translation()
 	tranlation_rules.emplace_back(string() +
 		_START_INDEX_OF_LEXEM + "<Expression>" + _END_INDEX_OF_LEXEM _NL
 		"pop eax" _NL
-		"mov [" +
+		"mov [_" +
 		_START_INDEX_OF_LEXEM + "ident" + _END_INDEX_OF_LEXEM
 		"], ax"
 	);
@@ -165,7 +166,7 @@ void initial_translation()
 		"pop eax" _NL
 		"pop ebx" _NL
 		_START_INDEX_OF_LEXEM + "<Binary_op>" + _END_INDEX_OF_LEXEM _NL
-		"pop eax"
+		"push eax"
 	);
 
 	tranlation_rules.emplace_back(string() +
@@ -188,14 +189,14 @@ void initial_translation()
 
 	tranlation_rules.emplace_back(string() +
 		"xor eax, eax" _NL
-		"mov ax, [" +
+		"mov ax, [_" +
 		_START_INDEX_OF_LEXEM + "ident" + _END_INDEX_OF_LEXEM + 
 		"]" _NL
 		"push eax"
 	);
 
 	tranlation_rules.emplace_back(string() +
-		"mov ax," +
+		"mov eax," +
 		_START_INDEX_OF_LEXEM + "<Const>" + _END_INDEX_OF_LEXEM _NL
 		"push eax"
 	);
@@ -211,8 +212,8 @@ void initial_translation()
 
 	tranlation_rules.emplace_back(string() +
 		_START_INDEX_OF_LEXEM + "<Expression>" + _END_INDEX_OF_LEXEM _NL
-		"pop eax" +
-		"cmp eax, 1" + 
+		"pop eax" _NL
+		"cmp eax, 1" _NL
 		"jne else" + _NEW_INDEX _NL
 		_START_INDEX_OF_LEXEM + "<Function_list>" + _END_INDEX_OF_LEXEM _NL
 		"jmp end_if" + _NEW_INDEX _NL
@@ -231,22 +232,53 @@ void initial_translation()
 	);
 
 	tranlation_rules.emplace_back(string() +
-		"push offset " +
+		"push offset _" +
 		_START_INDEX_OF_LEXEM + "ident" + _END_INDEX_OF_LEXEM _NL
 		"push offset __format" _NL
 		"call scanf" _NL
 		"add esp, 8" _NL
-		"push offset " +
+		"push offset _" +
 		_START_INDEX_OF_LEXEM + "ident" + _END_INDEX_OF_LEXEM _NL
 		"call cast" _NL
 		"add esp, 4"
 	);
 
 	tranlation_rules.emplace_back(string() +
-		"push offset " +
+		"push _" +
 		_START_INDEX_OF_LEXEM + "ident" + _END_INDEX_OF_LEXEM _NL
 		"push offset __format" _NL
 		"call printf" _NL
-		"add esp, 8"
+		"add esp, 6"
 	);
+}
+
+/// <summary>
+/// Применяет правило трансляции
+/// </summary>
+/// <param name="translation_magazine">Магазин транслятора</param>
+/// <param name="ind_rules">Индекс правила</param>
+/// <returns>Значение, которое необходимо положить на вершину автомата</returns>
+string apply_rule(const vector<string>& translation_magazine, const int & ind_rules)
+{
+	if (ind_rules == 27) {
+		int asdas = 0;
+	}
+	translator_node& node = tranlation_rules[ind_rules];
+	string new_value = "";
+	int offset_lexems = rules[ind_rules].right.size() - 1;
+	for (int i = 0; i < node.lexeme_indexes.size(); ++i) {
+		new_value += node.value[i];
+		auto eee = *(translation_magazine.rbegin() + offset_lexems - node.lexeme_indexes[i]);
+		new_value += *(translation_magazine.rbegin() + offset_lexems - node.lexeme_indexes[i]);
+	}
+	new_value += node.value.back();
+	int pos, ln_sep = strlen(_NEW_INDEX);
+	string new_index = to_string(_first_unused_index++);
+	int cnt = 0;
+	while ((pos = new_value.find(_NEW_INDEX)) != string::npos) {
+		new_value.replace(pos, ln_sep, new_index);
+		cnt++;
+	}
+	if (!cnt) _first_unused_index--;
+	return new_value;
 }

@@ -61,6 +61,7 @@ int main(int argc, char* argv[]) {
 		error.append("line " + to_string(error_pos.first + 1) + " position " + to_string(error_pos.second + 1));
 		exit_error(error.c_str());
 	}
+	translation(lines, terms);
 	exit_error("SUCCESS");
 	return 0;
 }

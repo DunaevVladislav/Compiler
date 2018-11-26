@@ -77,3 +77,13 @@
 /// Генерирует новый индекс при использование правила трансляции
 /// </summary>
 #define _NEW_INDEX "{@I}"
+
+/// <summary>
+/// Конструкция, используемая для перевода каретки при трансляции
+/// </summary>
+#define _TRANSLATE_NL "push offset __nl\ncall printf\nadd esp, 4"
+
+/// <summary>
+/// Конструкция, которую необходжимо удалить для отпимизациия кода
+/// </summary>
+#define _DELETED_CONSTR_FOR_OPTIMIZE "push eax\npop eax\n"

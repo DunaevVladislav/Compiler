@@ -127,6 +127,13 @@ string get_info(const term* trm);
 vector<int> upstream_analysis(const vector<term*>& input_line);
 
 /// <summary>
+/// Производит траснляцию
+/// </summary>
+/// <param name="lines">Исходный код</param>
+/// <param name="input_line">Входная лента</param>
+void translation(const vector<string>& lines, const vector<term*>& input_line);
+
+/// <summary>
 /// Возвращает идентификатор из входной ленты
 /// </summary>
 /// <param name="lines">Входная лента</param>

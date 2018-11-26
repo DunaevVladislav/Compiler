@@ -294,7 +294,92 @@ vector<int> upstream_analysis(const vector<term*>& input_line) {
 			throw runtime_error(error);
 		}
 	}
+}
 
+/// <summary>
+/// Конвертирует функции write и read, из функций многих аргументов, в набор функция с одним аргументом
+/// </summary>
+/// <param name="input_line">Входная лента</param>
+/// <returns>Входная лента с конвертированными функциями write и read</returns>
+vector<term*> _separate_IO_terms(const vector<term*>& input_line) {
+	vector<term*> terms;
+	bool start_read = false;
+	bool start_write = false;
+	for (auto& trm : input_line) {
+		if (start_read || start_write) {
+			if (dictionary[trm->val] == ";") {
+				start_read = start_write = false;
+				terms.erase(--terms.end());
+			}
+			if (dictionary[trm->val] == "ident") {
+				terms.emplace_back(new term(get_index("("), -1, -1));
+				terms.emplace_back(trm);
+				terms.emplace_back(new term(get_index(")"), -1, -1));
+				terms.emplace_back(new term(get_index(";"), -1, -1));
+				terms.emplace_back(new term(get_index(start_read?"read":"write"), -1, -1));
+			}
+		}
+		else {
+			if (dictionary[trm->val] == "read") start_read = true;
+			if (dictionary[trm->val] == "write") start_write = true;
+			terms.emplace_back(trm);
+		}
+	}
+	return terms;
+}
+
+void _optimize(string& code) {
+	int del_len = strlen(_DELETED_CONSTR_FOR_OPTIMIZE), pos;
+	while ((pos = code.find(_DELETED_CONSTR_FOR_OPTIMIZE)) != string::npos) {
+		code.erase(code.begin() + pos, code.begin() + pos + del_len);
+	}
+}
+
+/// <summary>
+/// Производит траснляцию
+/// </summary>
+/// <param name="lines">Исходный код</param>
+/// <param name="input_line">Входная лента</param>
+void translation(const vector<string>& lines, const vector<term*>& input_line){
+	auto terms = _separate_IO_terms(input_line);
+	vector<int> magazine;
+	vector<string> translation_magazine;
+	magazine.emplace_back(get_index(MAGAZINE_BOTTOM));
+	int ptr_input_line = 0;
+	while (true) {
+		bool ok = false;
+		for (int& ind_rules : automate[terms[ptr_input_line]->val][magazine.back()]) {
+			if (ind_rules == SUCCESS) {
+				ofstream out_f("asm_source.cpp");
+				string& code = *translation_magazine.rbegin();
+				//_optimize(code);
+				out_f << code;
+				out_f.close();
+				return;
+			}
+			if (ind_rules == -1) {
+				magazine.emplace_back(terms[ptr_input_line]->val);
+				if (dictionary[terms[ptr_input_line]->val] == "ident")
+					translation_magazine.emplace_back(get_real_ident(lines, terms[ptr_input_line]->ind_lines, terms[ptr_input_line]->ind_pos));
+				else
+					translation_magazine.emplace_back(dictionary[terms[ptr_input_line]->val]);
+				ptr_input_line++;
+				ok = true;
+				break;
+			}
+			if (magazine.size() < rules[ind_rules].right.size()) continue;
+			if (equal(rules[ind_rules].right.rbegin(), rules[ind_rules].right.rend(), magazine.rbegin())) {
+				string translation_ans = apply_rule(translation_magazine, ind_rules);
+				magazine.erase(magazine.begin() + (magazine.size() - rules[ind_rules].right.size()), magazine.end());
+				translation_magazine.erase(translation_magazine.begin() + (translation_magazine.size() - rules[ind_rules].right.size()), translation_magazine.end());
+				translation_magazine.emplace_back(translation_ans);
+				magazine.emplace_back(rules[ind_rules].left);
+				ok = true;
+				break;
+			}
+		}
+		if (!ok)throw runtime_error("Translation error");
+	}
 }
 
 /// <summary>

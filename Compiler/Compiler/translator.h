@@ -20,7 +20,7 @@ struct translator_node {
 	/// Вектор индексов правил
 	/// Содержит индексы лексем, перевод которых должен быть вставлен после каждой строки
 	/// </summary>
-	vector<int> lexeme_index;
+	vector<int> lexeme_indexes;
 	/// <summary>
 	/// Конструктор translator_node
 	/// </summary>
@@ -38,3 +38,10 @@ extern vector<translator_node> tranlation_rules;
 /// Инициализация транслятора
 /// </summary>
 void initial_translation();
+
+/// <summary>
+/// Применяет правило трансляции
+/// </summary>
+/// <param name="translation_magazine">Магазин транслятора</param>
+/// <param name="ind_rules">Индекс правила</param>
+string apply_rule(const vector<string>& translation_magazine, const int& ind_rules);

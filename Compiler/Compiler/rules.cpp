@@ -61,6 +61,6 @@ void initial_rules() {
 	rules.emplace_back(rule("<Function>", "if", "<Expression>", "then", "<Function_list>", "else", "<Function_list>", "end_if", ";"));
 	rules.emplace_back(rule("<Function>", "<Prefix_io>", ")", ";"));
 	rules.emplace_back(rule("<Function>", "<Prefix_io>", ")", ";"));
-	rules.emplace_back(rule("<Prefix_io>", "write", "(", "ident"));
 	rules.emplace_back(rule("<Prefix_io>", "read", "(", "ident"));
+	rules.emplace_back(rule("<Prefix_io>", "write", "(", "ident"));
 }

@@ -1,11 +1,18 @@
 var
-	a, av:logical;
+	a, b, c, d, temp:logical;
 begin
-	if (not a) then
-		read(a);
-		av = a or 1;
+	read(a, b, c, d);
+	temp = a or b;
+	temp = temp or c;
+	temp = temp or d;
+	if (temp) then
+		write(d,c,b,a);
 	else
-		av = a and 1;
-		write(av);
+		a = not a;
+		b = not b;
+		c = not c;
+		d = not d;
+		write(d,c,b,a);
 	end_if;
+	write(temp);
 end
