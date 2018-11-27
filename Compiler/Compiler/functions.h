@@ -8,6 +8,7 @@
 #include <string>
 #include <string.h>
 #include <fstream>
+#include <thread>
 using namespace std;
 
 /// <summary>
@@ -44,3 +45,28 @@ char* parce_code(const char* source, size_t source_size = 0);
 /// </summary>
 /// <param name="terms">Терминалы</param>
 void output_terminal_analysis(const vector<term*>& terms);
+
+/// <summary>
+/// Проверяет необходимость вывода help
+/// Выводит его при необходимости
+/// </summary>
+void check_help();
+
+/// <summary>
+/// Считывает исходный код из файла и вызывает функции для разбивание его на терминалы
+/// </summary>
+/// <param name="terms">Терминалы</param>
+/// <param name="lines">Исходный код, построчно</param>
+void get_terminals(vector<term*>& terms,  vector<string>& lines);
+
+/// <summary>
+/// Вызывает восходящее распознование и проверку идентификаторов
+/// </summary>
+/// <param name="terms">Терминалы</param>
+/// <param name="lines">Исходный код, построчно</param>
+void analysis_grammar(vector<term*>& terms, vector<string>& lines);
+
+/// <summary>
+/// Выводит информацию об успешной компиляции
+/// </summary>
+void ouput_success_result();

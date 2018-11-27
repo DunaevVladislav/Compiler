@@ -7,9 +7,9 @@ using namespace std;
 /// <param name="message">Сообщение, выводимое на экран</param>
 void exit_error(const char* message) {
 	puts(message);
-#if ( _WIN32 || __WIN32__ || _WIN64 || __WIN64__ || __CYGWIN__ )
+/*#if ( _WIN32 || __WIN32__ || _WIN64 || __WIN64__ || __CYGWIN__ )
     system("pause");
-#endif
+#endif*/
 	exit(0);
 }
 
@@ -80,4 +80,66 @@ void output_terminal_analysis(const vector<term*>& terms)
 		out << get_info(t) << endl;
 	}
 	out.close();
+}
+
+/// <summary>
+/// Проверяет необходимость вывода help
+/// Выводит его при необходимости
+/// </summary>
+void check_help() {
+	if (!out_help) return;
+	cout << "bool-lang [SOURCE_FILE] [-o COMPILED_FILE] [-oa ANALYSIS_FILE] [-ota TERMINAL_ANALYSIS_FILE]" << endl << endl;
+	cout << "-o (optional) compile the program into the specified file" << endl;
+	cout << "-oa (optional) output ascending analysis to the specified file" << endl;
+	cout << "-ota (optional) output terminal analysis to the specified file" << endl;
+	exit(0);
+}
+
+/// <summary>
+/// Считывает исходный код из файла и вызывает функции для разбивание его на терминалы
+/// </summary>
+/// <param name="terms">Терминалы</param>
+/// <param name="lines">Исходный код, построчно</param>
+void get_terminals(vector<term*>& terms, vector<string>& lines) {
+	if (input_file_name.empty()) {
+		out_help = true;
+		check_help();
+	}
+	thread initial_thread(initial);
+	char* source;
+	if (!~read_file(input_file_name.c_str(), source)) {
+		initial_thread.join();
+		throw runtime_error("File " + input_file_name + " not found");
+	}
+	initial_thread.join();
+	lines = split_lines(source);
+	terms = split_on_terminals(lines);
+	terms.emplace_back(new term(get_index(END_OF_TAPE), -1, -1));
+	output_terminal_analysis(terms);
+}
+
+/// <summary>
+/// Вызывает восходящее распознование и проверку идентификаторов
+/// </summary>
+/// <param name="terms">Терминалы</param>
+/// <param name="lines">Исходный код, построчно</param>
+void analysis_grammar(vector<term*>& terms, vector<string>& lines) {
+	upstream_analysis(terms);
+	pair<int, int> error_pos;
+	int check_ident_res = check_error_ident(lines, terms, error_pos);
+	if (check_ident_res != NO_ERROR_IN_DECLARE_IDENT) {
+		string message;
+		if (check_ident_res == UNKNOWN_IDENT) message = "Unknown identifier: ";
+		if (check_ident_res == REDECLARED_IDENT) message = "Redclared identifier: ";
+		message.append("line " + to_string(error_pos.first + 1) + " position " + to_string(error_pos.second + 1));
+		throw runtime_error(message);
+	}
+}
+
+/// <summary>
+/// Выводит информацию об успешной компиляции
+/// </summary>
+void ouput_success_result() {
+	cout << "Successful build" << endl;
+	cout << "Compiled file: " << output_file_name << endl;
 }

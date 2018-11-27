@@ -101,7 +101,9 @@ void initial() {
 int is_ident(const string& s)
 {
 	bool ok = true;
-	for (int i = 0; ok && i < s.length(); ++i) ok = isalpha(s[i]);
+	for (int i = 0; ok && i < s.length(); ++i) {
+		ok = s[i] >= -1 && s[i] <= 255 && isalpha(s[i]);
+	}
 	if (s.length() > _MAX_IDENT_LENGTH) return LONG_IDENT;
 	if (!ok) return NOT_IDENT;
 	return IS_IDENT;
@@ -350,9 +352,9 @@ void translation(const vector<string>& lines, const vector<term*>& input_line){
 		bool ok = false;
 		for (int& ind_rules : automate[terms[ptr_input_line]->val][magazine.back()]) {
 			if (ind_rules == SUCCESS) {
-				ofstream out_f("asm_source.cpp");
+				ofstream out_f(output_file_name);
 				string& code = *translation_magazine.rbegin();
-				//_optimize(code);
+				_optimize(code);
 				out_f << code;
 				out_f.close();
 				return;

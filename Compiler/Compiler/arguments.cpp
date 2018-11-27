@@ -93,4 +93,13 @@ void parce_args(const int & argc, char * argv[])
 		}
 		input_file_name = argv[i];
 	}
+	if (!out_file_declared) {
+		int pos = input_file_name.find_last_of(".");
+		if (pos == string::npos) {
+			output_file_name = input_file_name + ".cpp";
+		}
+		else {
+			output_file_name = input_file_name.substr(0, pos) + ".cpp";
+		}
+	}
 }
