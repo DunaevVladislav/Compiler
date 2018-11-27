@@ -49,6 +49,7 @@ void initial_translation()
 	tranlation_rules.emplace_back(string() + 
 		"#define _CRT_SECURE_NO_WARNINGS" _NL
 		"#define USINT unsigned short int" _NL
+		"#define  _asm _asm_" _NL
 		"#include <stdio.h>" _NL
 		"void cast(USINT& _a) {" _NL
 		"__asm {" _NL
