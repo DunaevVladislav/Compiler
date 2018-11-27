@@ -9,9 +9,9 @@ using namespace std;
 /// </summary>
 #define ARG_ANALYSIS "-oa"
 /// <summary>
-/// Файл, в который выводится восходящий разбор
+/// Имя файла, в который выводится восходящий разбор
 /// </summary>
-#define DEFAULT_ANALYSIS_FILE "analysis.txt"
+extern string analysis_file_name;
 /// <summary>
 /// Выводить ли восходящий разбор
 /// </summary>
@@ -22,9 +22,9 @@ extern bool out_analysis;
 /// </summary>
 #define ARG_TERMINAL_ANALYSIS "-ota"
 /// <summary>
-/// Файл, в который выводится разбор исходного кода на терминалы
+/// Имя файла, в который выводится разбор исходного кода на терминалы
 /// </summary>
-#define DEFAULT_TERMINAL_ANALYSIS_FILE "terminal_analysis.txt"
+extern string terminal_analysis_file_name;
 /// <summary>
 /// Выводить ли разбор исходного кода на терминалы
 /// </summary>

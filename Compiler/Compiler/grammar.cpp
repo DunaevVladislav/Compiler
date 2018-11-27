@@ -232,7 +232,7 @@ void _out_magazine(const vector<int>& magazine, ofstream& out) {
 /// <returns>Последовательность номером правил, которые приведут к получению исходной ленты</returns>
 vector<int> upstream_analysis(const vector<term*>& input_line) {
 	ofstream out_analysis_dscr;
-	if (out_analysis) out_analysis_dscr.open(DEFAULT_ANALYSIS_FILE);
+	if (out_analysis) out_analysis_dscr.open(analysis_file_name);
 	vector<int> magazine, form_rules;
 	magazine.emplace_back(get_index(MAGAZINE_BOTTOM));
 	int ptr_input_line = 0;

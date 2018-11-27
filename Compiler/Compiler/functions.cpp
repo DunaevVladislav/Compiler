@@ -74,7 +74,7 @@ char* parce_code(const char* source, size_t source_size) {
 void output_terminal_analysis(const vector<term*>& terms)
 {
 	if (!out_terminal_analysis) return;	
-	ofstream out(DEFAULT_TERMINAL_ANALYSIS_FILE);
+	ofstream out(terminal_analysis_file_name);
 	out << "terminals\tindex\t\tlines\t\tposition\n";
 	for (auto& t : terms) {
 		out << get_info(t) << endl;
