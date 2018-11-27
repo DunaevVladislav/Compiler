@@ -14,3 +14,8 @@ extern vector<int>** automate;
 /// Инициализация автомата
 /// </summary>
 void initial_automate();
+
+/// <summary>
+/// Освобождение памяти
+/// </summary>
+void dispose_automate();

@@ -123,7 +123,7 @@ void get_terminals(vector<term*>& terms, vector<string>& lines) {
 /// </summary>
 /// <param name="terms">Терминалы</param>
 /// <param name="lines">Исходный код, построчно</param>
-void analysis_grammar(vector<term*>& terms, vector<string>& lines) {
+void analysis_grammar(const vector<term*>& terms, const vector<string>& lines) {
 	upstream_analysis(terms);
 	pair<int, int> error_pos;
 	int check_ident_res = check_error_ident(lines, terms, error_pos);
@@ -142,4 +142,15 @@ void analysis_grammar(vector<term*>& terms, vector<string>& lines) {
 void ouput_success_result() {
 	cout << "Successful build" << endl;
 	cout << "Compiled file: " << output_file_name << endl;
+}
+
+/// <summary>
+/// Освобождение ресурсов
+/// </summary
+/// <param name="terms">Терминалы</param>
+void dispose(const vector<term*>& terms) {
+	dispose_automate();
+	for (auto& trm : terms) {
+		delete trm;
+	}
 }

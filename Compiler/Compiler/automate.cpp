@@ -202,3 +202,13 @@ void initial_automate() {
 
 	_add_in_automate(MAGAZINE_BOTTOM, "var", 0);
  }
+
+ /// <summary>
+/// Освобождение памяти
+/// </summary>
+ void dispose_automate() {
+	 for (int i = 0; i < terminals.size(); ++i) {
+		 delete[] automate[i];
+	 }
+	 delete[] automate;
+ }

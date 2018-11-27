@@ -64,9 +64,14 @@ void get_terminals(vector<term*>& terms,  vector<string>& lines);
 /// </summary>
 /// <param name="terms">Терминалы</param>
 /// <param name="lines">Исходный код, построчно</param>
-void analysis_grammar(vector<term*>& terms, vector<string>& lines);
+void analysis_grammar(const vector<term*>& terms, const vector<string>& lines);
 
 /// <summary>
 /// Выводит информацию об успешной компиляции
 /// </summary>
 void ouput_success_result();
+
+/// <summary>
+/// Освобождение ресурсов
+/// </summary>
+void dispose(const vector<term*>& terms);
