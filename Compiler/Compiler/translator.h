@@ -24,8 +24,7 @@ struct translator_node {
 	/// <summary>
 	///  онструктор translator_node
 	/// </summary>
-	/// <param name="First">ѕерва€ строка</param>
-	/// <param name="...translations">int, string... индексы лексем и строки</param>
+	/// <param name="str">—трока, котора€ на которую происходит замена при соответсвующей свертки</param>
 	explicit translator_node(const string& str);
 };
 

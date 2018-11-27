@@ -18,10 +18,8 @@ using namespace std;
 /// <param name="argv">аргументы командной строки</param>
 /// <returns>код ошибки</returns>
 int main(int argc, char* argv[]) {
-	if (argc == 1) exit_error("Choice file");
-	thread parce_thread([&]() {parce_args(argc - 1, argv + 1); });
+	parce_args(argc, argv);
 
-	char* file_name = argv[1], *source;
 	thread thr([&]() {
 		try {
 			initial();
@@ -30,11 +28,11 @@ int main(int argc, char* argv[]) {
 			exit_error(e.what());
 		}
 	});
-	if (!~read_file(file_name, source)) exit_error("File not exist");
+	char *source;
+	if (!~read_file(input_file_name.c_str(), source)) exit_error("File not exist");
 
 	thr.join();
 	vector<string> lines = split_lines(source);
-	parce_thread.join();
 
 	vector<term*> terms;
 	try {

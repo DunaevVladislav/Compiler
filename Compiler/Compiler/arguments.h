@@ -1,6 +1,9 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <string>
+using namespace std;
 /// <summary>
 /// Аргумент командной строки для вывода восходящего разбора
 /// </summary>
@@ -26,6 +29,33 @@ extern bool out_analysis;
 /// Выводить ли разбор исходного кода на терминалы
 /// </summary>
 extern bool out_terminal_analysis;
+
+/// <summary>
+/// Аргумент, для указания файла, в который будет скопмилирована программа
+/// </summary>
+#define ARG_OUTPUT_FILE "-o"
+/// <summary>
+/// Имя файла в который осуществляется вывод скомпилированного кода
+/// </summary>
+extern string output_file_name;
+/// <summary>
+/// Выводить ли скомпилированный код в указанный файл
+/// </summary>
+extern bool out_file_declared;
+
+/// <summary>
+/// Аргумент, для вывода help
+/// </summary>
+#define ARG_HELP "-h"
+/// <summary>
+/// Выводить ли help
+/// </summary>
+extern bool out_help;
+
+/// <summary>
+/// Имя файла с исходным кодом программы
+/// </summary>
+extern string input_file_name;
 
 /// <summary>
 /// Функция устанавливающие необходимые флаг для работы с аргументами командной строки

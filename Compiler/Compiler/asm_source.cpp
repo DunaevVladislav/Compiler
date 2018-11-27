@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define USINT unsigned short int
+#define  _asm _asm_
 #include <stdio.h>
 void cast(USINT& _a) {
 __asm {

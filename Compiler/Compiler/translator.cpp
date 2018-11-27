@@ -4,8 +4,7 @@
 /// <summary>
 ///  онструктор translator_node
 /// </summary>
-/// <param name="First">ѕерва€ строка</param>
-/// <param name="...translations">int, string... индексы лексем и строки</param>
+/// <param name="str">—трока, котора€ на которую происходит замена при соответсвующей свертки</param>
 inline translator_node::translator_node(const string& str)
 {
 	int cur_rules = tranlation_rules.size();
