@@ -42,6 +42,7 @@ void initial_automate() {
 	_add_in_automate("var", "ident", 0);
 	_add_in_automate("begin", "read", 0);
 	_add_in_automate("begin", "write", 0);
+	_add_in_automate("begin", "nl", 0);
 	_add_in_automate("begin", "if", 0);
 	_add_in_automate("begin", "ident", 0);
 	_add_in_automate("end", END_OF_TAPE, 7);
@@ -66,6 +67,7 @@ void initial_automate() {
 
 	_add_in_automate("read", "(", 0);
 	_add_in_automate("write", "(", 0);
+	_add_in_automate("nl", "(", 0);
 
 	_add_in_automate("if", "0", 0);
 	_add_in_automate("if", "1", 0);
@@ -73,10 +75,12 @@ void initial_automate() {
 	_add_in_automate("if", "(", 0);
 	_add_in_automate("then", "read", 0);
 	_add_in_automate("then", "write", 0);
+	_add_in_automate("then", "nl", 0);
 	_add_in_automate("then", "if", 0);
 	_add_in_automate("then", "ident", 0);
 	_add_in_automate("else", "read", 0);
 	_add_in_automate("else", "write", 0);
+	_add_in_automate("else", "nl", 0);
 	_add_in_automate("else", "if", 0);
 	_add_in_automate("else", "ident", 0);
 	_add_in_automate("end_if", ";", 0);
@@ -105,13 +109,14 @@ void initial_automate() {
 	_add_in_automate("ident", ")", 6, 31,32, 22);
 
 	_add_in_automate(";", "begin", 2);
-	_add_in_automate(";", "end", 12, 26, 27, 28, 29, 30);
-	_add_in_automate(";", "read", 12, 26, 27, 28, 29, 30);
-	_add_in_automate(";", "write", 12, 26, 27, 28, 29, 30);
-	_add_in_automate(";", "if", 12, 26, 27, 28, 29, 30);
-	_add_in_automate(";", "ident", 12, 26, 27, 28, 29, 30);
-	_add_in_automate(";", "else", 12, 26, 27, 28, 29, 30);
-	_add_in_automate(";", "end_if", 12, 26, 27, 28, 29, 30);
+	_add_in_automate(";", "end", 12, 26, 27, 28, 29, 30, 33);
+	_add_in_automate(";", "read", 12, 26, 27, 28, 29, 30, 33);
+	_add_in_automate(";", "write", 12, 26, 27, 28, 29, 30, 33);
+	_add_in_automate(";", "nl", 12, 26, 27, 28, 29, 30, 33);
+	_add_in_automate(";", "if", 12, 26, 27, 28, 29, 30, 33);
+	_add_in_automate(";", "ident", 12, 26, 27, 28, 29, 30, 33);
+	_add_in_automate(";", "else", 12, 26, 27, 28, 29, 30, 33);
+	_add_in_automate(";", "end_if", 12, 26, 27, 28, 29, 30, 33);
 
 	_add_in_automate(":", "logical", 3, 4);
 	_add_in_automate(",", "ident", 0);
@@ -127,6 +132,7 @@ void initial_automate() {
 	_add_in_automate("(", "1", 0);
 	_add_in_automate("(", "ident", 0);
 	_add_in_automate("(", "(", 0);
+	_add_in_automate("(", ")", 0);
 
 
 	_add_in_automate(")", "and", 15);
@@ -150,6 +156,7 @@ void initial_automate() {
 	_add_in_automate("<Assignment>", "end", 8);
 	_add_in_automate("<Assignment>", "read", 0);
 	_add_in_automate("<Assignment>", "write", 0);
+	_add_in_automate("<Assignment>", "nl", 0);
 	_add_in_automate("<Assignment>", "if", 0);
 	_add_in_automate("<Assignment>", "ident", 0);
 	_add_in_automate("<Assignment>", "else", 8);
@@ -158,6 +165,7 @@ void initial_automate() {
 	_add_in_automate("<Function>", "end", 10);
 	_add_in_automate("<Function>", "read", 0);
 	_add_in_automate("<Function>", "write", 0);
+	_add_in_automate("<Function>", "nl", 0);
 	_add_in_automate("<Function>", "if", 0);
 	_add_in_automate("<Function>", "ident", 0);
 	_add_in_automate("<Function>", "else", 10);

@@ -63,4 +63,5 @@ void initial_rules() {
 	rules.emplace_back("<Function>", "<Prefix_io>", ")", ";");
 	rules.emplace_back("<Prefix_io>", "read", "(", "ident");
 	rules.emplace_back("<Prefix_io>", "write", "(", "ident");
+	rules.emplace_back("<Function>", "nl", "(", ")", ";");
 }

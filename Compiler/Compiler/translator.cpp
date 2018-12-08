@@ -65,6 +65,7 @@ void initial_translation()
 		"pop eax" _NL
 		"}}" _NL
 		"char __format[4] = \"%hu\";" _NL
+		"char __nl[1] = \"\";" _NL
 		_START_INDEX_OF_LEXEM + "<Var_declare>" + _END_INDEX_OF_LEXEM _NL
 		_START_INDEX_OF_LEXEM + "<Calculation_descr>" + _END_INDEX_OF_LEXEM 
 	);
@@ -249,6 +250,12 @@ void initial_translation()
 		"push offset __format" _NL
 		"call printf" _NL
 		"add esp, 6"
+	);
+
+	tranlation_rules.emplace_back(string() +
+		"push offset __nl" _NL
+		"call puts" _NL
+		"add esp, 4"
 	);
 }
 

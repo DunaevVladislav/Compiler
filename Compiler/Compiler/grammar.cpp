@@ -28,6 +28,7 @@ vector<string> terminals = {
 	"=",
 	"(",
 	")",
+	"nl",
 	END_OF_TAPE,
 };
 
@@ -310,8 +311,14 @@ vector<term*> _separate_IO_terms(const vector<term*>& input_line) {
 	for (auto& trm : input_line) {
 		if (start_read || start_write) {
 			if (dictionary[trm->val] == ";") {
-				start_read = start_write = false;
 				terms.erase(--terms.end());
+				if (start_write) {
+					terms.emplace_back(new term(get_index("nl"), -1, -1));
+					terms.emplace_back(new term(get_index("("), -1, -1));
+					terms.emplace_back(new term(get_index(")"), -1, -1));
+					terms.emplace_back(new term(get_index(";"), -1, -1));
+				}
+				start_read = start_write = false;				
 			}
 			if (dictionary[trm->val] == "ident") {
 				terms.emplace_back(new term(get_index("("), -1, -1));
