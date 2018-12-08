@@ -66,14 +66,32 @@ namespace Editor
             config.Close();
         }
 
-        public string CompileBoolLang(string sourcePath)
+        public string CompileBoolLang(string sourcePath, out StreamReader output, out StreamReader error)
         {
-            var outputFile = sourcePath + ".cpp";
-            Process.Start(bool_lang_compile_path, sourcePath + " -o " + outputFile);
+            var outputFile = sourcePath.Substring(0, sourcePath.Length - 4) + "cpp";
+            Process process = new Process();
+            process.StartInfo.Arguments = sourcePath + " -o " + outputFile;
+            process.StartInfo.FileName = bool_lang_compile_path;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.Start();
+            output = process.StandardOutput;
+            error = process.StandardError;
             return outputFile;
         }
 
-        private string GetPathWithLastVersion(string path) => Directory.GetDirectories(path).Last();
+        private string GetPathWithLastVersion(string path)
+        {
+            foreach(var dir in Directory.GetDirectories(path).Reverse())
+            { 
+                for (int i = dir.Length - 1; i >= 0; --i) {
+                    if (dir[i] == '\\') return dir;
+                    if (!(dir[i] >= '0' && dir[i] <= '9' || dir[i] == '.')) break;
+                }
+            }
+            return path;
+        }
 
         private string GetVSLastVsVersion()
         {
@@ -81,10 +99,35 @@ namespace Editor
             return GetPathWithLastVersion(path);
         }
 
-        public void CompileMSC(string sourcePath)
+        public void CompileMSC(string sourcePath, out StreamReader output, out StreamReader error)
         {
             var VSVerPath = GetVSLastVsVersion();
+            var CLPath = Path.Combine(VSVerPath, "bin", "Hostx86", "x86", "cl.exe");
+            var VSInludes = Path.Combine(VSVerPath, "include");
+            var WindowsInludes = Path.Combine(GetPathWithLastVersion(Path.Combine(windows_tools_path, "Include")), "ucrt");
 
+            var LinkVS = Path.Combine(VSVerPath, "lib", "x86");
+            var LinkWin1 = Path.Combine(GetPathWithLastVersion(Path.Combine(windows_tools_path, "lib")), "um", "x86");
+            var LinkWin2 = Path.Combine(GetPathWithLastVersion(Path.Combine(windows_tools_path, "lib")), "ucrt", "x86");
+
+            var arguments = "/EHsc" +
+                " /I " + "\"" + VSInludes + "\"" +
+                " /I " + "\"" + WindowsInludes + "\"" +
+                " " + "\"" + sourcePath + "\"" +
+                " /link" +
+                " /LIBPATH:" + "\"" + LinkVS + "\"" +
+                " /LIBPATH:" + "\"" + LinkWin1 + "\"" +
+                " /LIBPATH:" + "\"" + LinkWin2 + "\"";
+
+            Process process = new Process();
+            process.StartInfo.Arguments = arguments;
+            process.StartInfo.FileName = CLPath;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.Start();
+            output = process.StandardOutput;
+            error = process.StandardError;
         }
 
     }
